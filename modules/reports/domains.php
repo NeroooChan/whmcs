@@ -209,10 +209,7 @@ if (count($incfields)) {
         $query->whereBetween('nextduedate', [$fromdate, $todate]);
     }
 
-    $results = $query
-        ->join('tblclients', 'tblclients.id', '=', 'tbldomains.userid')
-        ->get()
-        ->all();
+    $results = $query->join('tblclients', 'tblclients.id', '=', 'tbldomains.userid')->get();
 
     foreach ($results as $result) {
         $result = (array) $result;

@@ -75,8 +75,7 @@ $r = 0;
 
 $results = Capsule::table('tbladmins')
     ->orderBy('firstname', 'asc')
-    ->get(['id', 'firstname', 'lastname'])
-    ->all();
+    ->get(['id', 'firstname', 'lastname']);
 foreach ($results as $data) {
     $adminid = $data->id;
     $firstname = $data->firstname;
@@ -97,8 +96,7 @@ foreach ($results as $data) {
             ->where('start', '>=', $datestart)
             ->where('start', '<', $dateend)
             ->where('adminid', $adminid)
-            ->get(['start', 'end'])
-            ->all();
+            ->get(['start', 'end']);
         foreach ($results2 as $data) {
             $starttime = $data->start;
             $endtime = $data->end;

@@ -20,7 +20,7 @@ CREATE TABLE `tblorders` (
   `promotype` text COLLATE utf8_unicode_ci NOT NULL,
   `promovalue` text COLLATE utf8_unicode_ci NOT NULL,
   `orderdata` text COLLATE utf8_unicode_ci NOT NULL,
-  `amount` decimal(16,2) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
   `paymentmethod` text COLLATE utf8_unicode_ci NOT NULL,
   `invoiceid` int(10) NOT NULL DEFAULT '0',
   `status` text COLLATE utf8_unicode_ci NOT NULL,

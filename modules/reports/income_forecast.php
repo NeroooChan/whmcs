@@ -21,8 +21,7 @@ $results = Capsule::table('tblhosting')
     ->where('tblhosting.domainstatus', '=', 'Active')
     ->where('tblclients.currency', '=', (int) $currencyid)
     ->join('tblclients', 'tblclients.id', '=', 'tblhosting.userid')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $recurringamount = $result->amount;
     $nextduedate = $result->nextduedate;
@@ -54,8 +53,7 @@ $results = Capsule::table('tbldomains')
     ->where('tbldomains.status', '=', 'Active')
     ->where('tblclients.currency', '=', (int) $currencyid)
     ->join('tblclients', 'tblclients.id', '=', 'tbldomains.userid')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $recurringamount = $result->recurringamount;
     $nextduedate = $result->nextduedate;

@@ -72,8 +72,7 @@ class Overview extends AbstractWidget
             )
             ->where('date', '>', $today)
             ->groupBy(Capsule::raw("DATE_FORMAT(date, '%k')"))
-            ->get()
-            ->all();
+            ->get();
 
         foreach ($results as $result) {
             $incomeData['today'][$result->dateTime] = $result->amountIn;
@@ -86,8 +85,7 @@ class Overview extends AbstractWidget
             )
             ->where('date', '>', $month)
             ->groupBy(Capsule::raw("DATE_FORMAT(date, '%e %M')"))
-            ->get()
-            ->all();
+            ->get();
         foreach ($results as $result) {
             $incomeData['month'][$result->dateTime] = $result->amountIn;
         }
@@ -99,8 +97,7 @@ class Overview extends AbstractWidget
             )
             ->where('date', '>', $year)
             ->groupBy(Capsule::raw("date_format(date, '%M %Y')"))
-            ->get()
-            ->all();
+            ->get();
 
         foreach ($results as $result) {
             $incomeData['year'][$result->dateTime] = $result->amountIn;
@@ -184,11 +181,6 @@ class Overview extends AbstractWidget
         $langActiveThisMonth = AdminLang::trans('billing.incomethismonth');
         $langActiveThisYear = AdminLang::trans('billing.incomethisyear');
 
-        $langNewOrders = AdminLang::trans('home.newOrders');
-        $langActivatedOrders = AdminLang::trans('home.activatedOrders');
-        $langIncome = AdminLang::trans('billing.income');
-        $langOrders = AdminLang::trans('orders.title');
-
         return <<<EOF
 <div style="padding:20px;">
     <div class="btn-group btn-group-sm btn-period-chooser" role="group" aria-label="...">
@@ -233,7 +225,7 @@ $(document).ready(function() {
         labels: [{$graphLabels}],
         datasets: [
             {
-                label: '{$langNewOrders}',
+                label: "New Orders",
                 backgroundColor: "rgba(220,220,220,0.5)",
                 borderColor: "rgba(220,220,220,1)",
                 pointBackgroundColor: "rgba(220,220,220,1)",
@@ -244,7 +236,7 @@ $(document).ready(function() {
                 lineTension: 0
             },
             {
-                label: '{$langActivatedOrders}',
+                label: "Activated Orders",
                 backgroundColor: "rgba(51,92,249,0.5)",
                 borderColor: "rgba(51,92,249,1)",
                 pointBackgroundColor: "rgba(51,92,249,1)",
@@ -253,7 +245,7 @@ $(document).ready(function() {
                 data: [{$graphData3}]
             },
             {
-                label: '{$langIncome}',
+                label: "Income",
                 backgroundColor: "rgba(93,197,96,0.5)",
                 borderColor: "rgba(93,197,96,1)",
                 pointBackgroundColor: "rgba(93,197,96,1)",
@@ -286,7 +278,7 @@ $(document).ready(function() {
                         "id": "y-axis-0",
                         scaleLabel: {
                             display: true,
-                            labelString: '{$langOrders}'
+                            labelString: 'Orders'
                         },
                         ticks: {
                             beginAtZero: true
@@ -297,7 +289,7 @@ $(document).ready(function() {
                         "id": "y-axis-1",
                         scaleLabel: {
                             display: true,
-                            labelString: '{$langIncome}'
+                            labelString: 'Income'
                         },
                         ticks: {
                             beginAtZero: true

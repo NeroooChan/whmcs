@@ -1,5 +1,18 @@
-<?php
-namespace WHMCS;
+<?php namespace WHMCS;
+/******************************************/
+/*                                        */
+/*      Decoded by: buddyfix.com          */
+/*                                        */
+/******************************************/
+
+/**
+ * WHMCS License Class
+ *
+ * Handles license checking & validation
+ *
+ * @author     WHMCS Limited <development@whmcs.com>
+ * @copyright  Copyright (c) WHMCS Limited 2005-2016
+ */
 
 class License
 {
@@ -278,6 +291,7 @@ class License
 			$this->lastCurlError = curl_error($ch) . ' - Code ' . curl_errno($ch);
 			throw new Exception('Curl Error: ' . curl_error($ch) . ' - Code ' . curl_errno($ch));
 		}
+
 		curl_close($ch);
 
 		if ($responsecode != 200) {
@@ -291,18 +305,18 @@ class License
 		}
 		$results["status"] = "Active";
 		$results["key"] = $S['licensekey'];
-		$results["registeredname"] = "Bukkn4is";
-		$results["productname"] = "WHMCS v8.6.1";
+		$results["registeredname"] = "VeryLeaks";
+		$results["productname"] = "Owned License No Branding";
 		$results["productid"] = "5";
 		$results["billingcycle"] = "One Time";
 		$results["validdomains"] = $this->getHostDomain();
 		$results["validips"] = $this->getHostIP();
 		$results["validdirs"] = $this->getHostDir();
 		$results["checkdate"] = Carbon::now()->toDateString();
-		$results["version"] = "7.10.1";
-		$results["regdate"] = "2020-03-01";
-		$results["nextduedate"] = "2099-08-01";
-		$results["addons"] = array(array('name' => 'Branding Removal', 'nextduedate' => '2099-08-01', 'status' => 'Active'), array('name' => 'Support and Updates', 'nextduedate' => '2099-08-01', 'status' => 'Active'), array('name' => 'Project Management Addon', 'nextduedate' => '2099-08-01', 'status' => 'Active'), array('name' => 'Licensing Addon', 'nextduedate' => '2099-08-01', 'status' => 'Active'), array('name' => 'Mobile Edition', 'nextduedate' => '2099-08-01', 'status' => 'Active'), array('name' => 'iPhone App', 'nextduedate' => '2099-08-01', 'status' => 'Active'), array('name' => 'Android App', 'nextduedate' => '2099-08-01', 'status' => 'Active'), array('name' => 'Configurable Package Addon', 'nextduedate' => '2099-08-01', 'status' => 'Active'), array('name' => 'Live Chat Monthly No Branding', 'nextduedate' => '2099-08-01', 'status' => 'Active'));
+		$results["version"] = "7.10.2";
+		$results["regdate"] = "2020-02-19";
+		$results["nextduedate"] = "";
+		$results["addons"] = array(array('name' => 'Branding Removal', 'nextduedate' => '', 'status' => 'Active'), array('name' => 'Support and Updates', 'nextduedate' => '', 'status' => 'Active'), array('name' => 'Project Management Addon', 'nextduedate' => '', 'status' => 'Active'), array('name' => 'Licensing Addon', 'nextduedate' => '', 'status' => 'Active'), array('name' => 'Mobile Edition', 'nextduedate' => '', 'status' => 'Active'), array('name' => 'iPhone App', 'nextduedate' => '', 'status' => 'Active'), array('name' => 'Android App', 'nextduedate' => '', 'status' => 'Active'), array('name' => 'Configurable Package Addon', 'nextduedate' => '', 'status' => 'Active'), array('name' => 'Live Chat Monthly No Branding', 'nextduedate' => '', 'status' => 'Active'));
 		$results["hash"] = sha1("WHMCSV5.2SYH" . $S["check_token"]);
 
 		return $results;

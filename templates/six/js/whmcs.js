@@ -303,21 +303,17 @@ jQuery(document).ready(function() {
 
         var form = button.parents('form');
 
-        if (form.length === 0) {
+        if (form.length == 0) {
             form = button.find('form');
         }
-        if (form.hasClass('disabled') || button.hasClass('disabled')) {
+        if (form.hasClass('disabled')) {
             return;
         }
-        var url = form.data('href');
-        if (!url) {
-            url = window.location.href;
-        }
 
-        button.attr('disabled', 'disabled').addClass('disabled');
-        button.find('.loading').removeClass('hidden').show().end();
+        button.find('.loading').removeClass('hidden').show().end()
+            .attr('disabled', 'disabled');
         WHMCS.http.jqClient.post(
-            url,
+            window.location.href,
             form.serialize(),
             function (data) {
                 button.find('.loading').hide().end().removeAttr('disabled');
@@ -330,10 +326,7 @@ jQuery(document).ready(function() {
                 }
             },
             'json'
-        ).always(function() {
-            button.removeAttr('disabled').removeClass('disabled');
-            button.find('.loading').hide().end();
-        });
+        );
     });
     jQuery('.btn-sidebar-form-submit').on('click', function(e) {
         e.preventDefault();
@@ -351,6 +344,13 @@ jQuery(document).ready(function() {
         } else {
             jQuery(this).find('.loading').hide().end().removeAttr('disabled');
         }
+    });
+
+    // Email verification close
+    jQuery('.email-verification .btn.close').click(function(e) {
+        e.preventDefault();
+        WHMCS.http.jqClient.post('clientarea.php', 'action=dismiss-email-banner&token=' + csrfToken);
+        jQuery('.email-verification').hide();
     });
 
     // Back to top animated scroll
@@ -396,8 +396,6 @@ jQuery(document).ready(function() {
                 jQuery('#' + targetFields[i]).val(jQuery('#inputGeneratePasswordOutput').val())
                     .trigger('keyup');
             }
-            // Remove the generated password.
-            jQuery('#inputGeneratePasswordOutput').val('');
         });
 
     /**
@@ -499,30 +497,17 @@ jQuery(document).ready(function() {
         });
     });
 
+    var btnResendEmail = jQuery('#btnResendVerificationEmail');
+
     // Email verification
-    var btnResendEmail = jQuery('.btn-resend-verify-email');
     jQuery(btnResendEmail).click(function() {
-        $(this).prop('disabled', true).find('.loader').removeClass('hidden').show();
-        WHMCS.http.jqClient.post(
-            jQuery(this).data('uri'),
+        WHMCS.http.jqClient.post('clientarea.php',
             {
                 'token': csrfToken,
+                'action': 'resendVerificationEmail'
             }).done(function(data) {
-                btnResendEmail.find('.loader').hide();
-                if (data.success) {
-                    btnResendEmail.text(btnResendEmail.data('email-sent'));
-                } else {
-                    btnResendEmail.text(btnResendEmail.data('error-msg'));
-                }
+                jQuery(btnResendEmail).text(jQuery(btnResendEmail).data('email-sent')).prop('disabled', true);
             });
-    });
-    jQuery('#btnEmailVerificationClose').click(function(e) {
-        e.preventDefault();
-        WHMCS.http.jqClient.post(jQuery(this).data('uri'),
-            {
-                'token': csrfToken,
-            });
-        jQuery('.email-verification').hide();
     });
 
     /**
@@ -592,7 +577,7 @@ jQuery(document).ready(function() {
 
     jQuery('#frmPayment').on('submit', function() {
         var btn = jQuery('#btnSubmit');
-            btn.find('span').toggle();
+            btn.find('span').toggleClass('hidden');
             btn.prop('disabled', true).addClass('disabled');
     });
 
@@ -620,17 +605,17 @@ jQuery(document).ready(function() {
 
         var noTlds = jQuery('.tld-row.no-tlds');
 
-        if (jQuery(this).hasClass('badge-success')) {
-            jQuery(this).removeClass('badge-success');
+        if (jQuery(this).hasClass('label-success')) {
+            jQuery(this).removeClass('label-success');
         } else {
-            jQuery(this).addClass('badge-success');
+            jQuery(this).addClass('label-success');
         }
         if (noTlds.is(':visible')) {
             noTlds.hide();
         }
 
         jQuery('.tld-row').removeClass('filtered-row');
-        jQuery('.tld-filters a.badge-success').each(function(index) {
+        jQuery('.tld-filters a.label-success').each(function(index) {
             var filterValue = jQuery(this).data('category');
             jQuery('.tld-row[data-category*="' + filterValue + '"]').addClass('filtered-row');
         });
@@ -652,6 +637,9 @@ jQuery(document).ready(function() {
 
     // DataTable data-driven auto object registration
     WHMCS.ui.dataTable.register();
+
+    // Bootstrap Confirmation popup auto object registration
+    WHMCS.ui.confirmation.register();
 
     WHMCS.ui.jsonForm.initAll();
 
@@ -678,47 +666,25 @@ jQuery(document).ready(function() {
     });
 
     jQuery('.ssl-state.ssl-sync').each(function () {
-        var self = jQuery(this),
-            type = getSslAttribute(self, 'type'),
-            domain = getSslAttribute(self, 'domain');
+        var self = jQuery(this);
         WHMCS.http.jqClient.post(
             WHMCS.utils.getRouteUrl('/domain/ssl-check'),
             {
-                'type': type,
-                'domain': domain,
+                'type': self.parent('td').data('type'),
+                'domain': self.parent('td').data('domain'),
                 'token': csrfToken
             },
             function (data) {
                 if (data.invalid) {
                     self.hide();
                 } else {
-                    var width = '',
-                        statusDisplayLabel = '';
-                    if (self.attr('width')) {
-                        width = ' width="' + self.attr('width') + '"';
-                    }
-                    if (self.data('showlabel')) {
-                        statusDisplayLabel = ' ' + data.statusDisplayLabel;
-                    }
                     self.replaceWith(
-                        '<img src="' + data.image + '" data-toggle="tooltip" title="' + data.tooltip + '" class="' + data.class + '"' + width + '>'
+                        '<img src="' + data.image + '" data-toggle="tooltip" title="' + data.tooltip + '" class="' + data.class + '">'
                     );
-                    if (data.ssl.status === 'active') {
-                        jQuery('#ssl-startdate').text(data.ssl.startDate);
-                        jQuery('#ssl-expirydate').text(data.ssl.expiryDate);
-                        jQuery('#ssl-issuer').text(data.ssl.issuer);
-                    } else {
-                        jQuery('#ssl-startdate').parent('div').hide();
-                        jQuery('#ssl-expirydate').parent('div').hide();
-                        jQuery('#ssl-issuer').parent('div').hide();
-                    }
-
-                    jQuery('#statusDisplayLabel').text(statusDisplayLabel);
                 }
             }
         );
     });
-
     jQuery(document).on('click', '.ssl-state.ssl-inactive', function(e) {
         e.preventDefault();
         window.location.href = WHMCS.utils.getRouteUrl('/ssl-purchase');
@@ -781,49 +747,7 @@ jQuery(document).ready(function() {
             descContainer.removeClass('disabled').prop('disabled', false);
         }
     });
-
-    jQuery(document).on('click', '#btnConfirmModalConfirmBtn', function () {
-        var confirmButton = jQuery(this),
-            confirmationModal = confirmButton.closest('div.modal'),
-            targetUrl = confirmButton.data('target-url'),
-            dataTable = confirmButton.closest('table.dataTable[data-on-draw-rebind-confirmation-modal="true"]');
-        WHMCS.http.jqClient.jsonPost(
-            {
-                url: targetUrl,
-                data: {
-                    token: csrfToken
-                },
-                success: function(data) {
-                    if (data.status === 'success' || data.status === 'okay') {
-                        if (dataTable.length > 0) {
-                            dataTable.DataTable().ajax.reload();
-                        }
-                    }
-                }
-            }
-        );
-        confirmationModal.modal('toggle');
-    });
 });
-
-/**
- * Control disabled/enabled state of elements by class name.
- *
- * @param {string} className     Common element class name.
- * @param {bool} disabledState   Whether the elements should be disabled or not.
- */
-function disableFields(className, disabledState) {
-    if (className[0] != '.') {
-        className = '.' + className;
-    }
-    var elements = jQuery(className);
-    elements.prop('disabled', disabledState);
-    if (disabledState) {
-        elements.addClass('disabled');
-    } else {
-        elements.removeClass('disabled');
-    }
-}
 
 /**
  * Check all checkboxes with a given class.
@@ -1075,12 +999,19 @@ function showNewAccountInputFields() {
  */
 function hideNewCardInputFields() {
     hideNewBillingAddressFields();
+
     jQuery(".cc-details").slideUp();
     jQuery("#billingAddressChoice").slideUp();
-    var contactId = jQuery('input[name="ccinfo"]:checked').data('billing-contact-id');
-    if (contactId != undefined) {
-        jQuery('#billingAddressChoice label.billing-contact-' + contactId)
-            .iCheck('check');
+
+    var selectedCcInfo = jQuery('input[name="ccinfo"]:checked');
+
+    var selectedCcBillingContactId = jQuery(selectedCcInfo).data('billing-contact-id');
+
+    var selectedBillingContactData = jQuery('.billing-contact-info[data-billing-contact-id="' + selectedCcBillingContactId + '"]');
+
+    if (selectedBillingContactData.length) {
+        jQuery('.billing-contact-info').hide();
+        jQuery(selectedBillingContactData).show();
     }
 }
 
@@ -1156,11 +1087,4 @@ function showOverlay(msg) {
 
 function hideOverlay() {
     jQuery('#fullpage-overlay').hide();
-}
-
-function getSslAttribute(element, attribute) {
-    if (element.data(attribute)) {
-        return element.data(attribute);
-    }
-    return element.parent('td').data(attribute);
 }

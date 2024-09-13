@@ -1,4 +1,4 @@
-<link href="{assetPath file='store.css'}" rel="stylesheet">
+<link href="{$WEB_ROOT}/templates/{$template}/store/css/style.css" rel="stylesheet">
 
 <div class="landing-page sitelockvpn">
 
@@ -153,7 +153,7 @@
                                         {/if}
                                     </ul>
                                     <div class="signup">
-                                        <form method="post" action="{routePath('cart-order')}">
+                                        <form method="post" action="{routePath('store-order')}">
                                             <input type="hidden" name="pid" value="{$plan->id}">
                                             {if !$inPreview}
                                                 <input type="hidden" name="billingcycle" value="{$pricing->cycle()}">

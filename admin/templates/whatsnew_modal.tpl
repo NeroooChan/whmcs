@@ -7,7 +7,7 @@
             mouseDrag: true,
             touchDrag: true,
             autoplay: true,
-            autoplayTimeout: 5000,
+            autoplayTimeout: 4000,
             autoplayHoverPause: true
         });
 

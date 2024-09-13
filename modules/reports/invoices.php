@@ -262,10 +262,7 @@ if (count($incfields)) {
         $query->whereBetween('date_cancelled', [$fromdate, $todate]);
     }
 
-    $results = $query
-        ->join('tblclients', 'tblclients.id', '=', 'tblinvoices.userid')
-        ->get()
-        ->all();
+    $results = $query->join('tblclients', 'tblclients.id', '=', 'tblinvoices.userid')->get();
 
     foreach ($results as $result) {
         $result = (array) $result;

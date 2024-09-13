@@ -130,16 +130,6 @@ $(document).ready(function(){
         }
         $('#inputRelatedServiceType').val(type);
     })
-
-    jQuery(document).on('click', '#relatedservicestbl tr', function() {
-        if(!jQuery('#relatedservicestbl .related-service').hasClass('hidden')) {
-            jQuery(this).find('input').prop('checked', true);
-        }
-    });
-
-    jQuery(document).on('click', '#relatedservicestbl tr a', function(e) {
-        e.stopPropagation();
-    });
 });
 
 function insertKBLink(url, title) {
@@ -186,8 +176,7 @@ function selectpredefreply(artid) {
 }
 function dropdownSelectClient(userId, name, email) {
     var rowSelectInfo = $('#rowSelectInfo'),
-        relatedServicesTable = $('#relatedservicestbl'),
-        relatedServiceBtn = jQuery('#btnRelatedServiceExpand');
+        relatedServicesTable = $('#relatedservicestbl');
     $("#clientinput").val(userId);
     $("#name").val(name).prop("disabled", true);
     if (email === "undefined") {
@@ -201,9 +190,6 @@ function dropdownSelectClient(userId, name, email) {
             .not("[data-original='true']")
             .remove();
     }
-    relatedServicesTable.find('tr')
-        .not(":first-child")
-        .hide();
     rowSelectInfo.after(
         '<tr id="rowLoading" class="fieldlabel text-center"><td colspan="7">' +
             '<img src="images/loading.gif" align="top" /> ' + loadingText + '</td></tr>'
@@ -215,78 +201,33 @@ function dropdownSelectClient(userId, name, email) {
                 '/support/ticket/open/client/' + userId + '/additional/data'
             ),
             data: {
-                token: csrfToken,
-                showTen: true
-            },
-            success: function(data) {
-                var ccs = jQuery(".selectize-newTicketCc")[0].selectize;
-                if (typeof ccs !== 'undefined') {
-                    ccs.clear();
-                    ccs.clearOptions();
-                    if (data.ccs.length) {
-                        ccs.addOption(data.ccs);
-                    }
-                }
-
-                if (data.services && relatedServiceBtn.length) {
-                    relatedServiceBtn.prop('disabled', false);
-                }
-
-                relatedServicesTable.find('tbody').append(data.services);
-                relatedServicesTable.find('td.hidden').removeClass('hidden');
-                relatedServicesTable.find('tr.hidden').removeClass('hidden');
-                relatedServicesTable.find('tr').not("[id='rowSelectInfo']").show();
-                rowSelectInfo.addClass('hidden');
-                if (relatedServiceType) {
-                    $('input[name="related_service[]"][data-type="' + relatedServiceType + '"][value="' + relatedService + '"]')
-                        .prop('checked', true);
-                    $('#inputRelatedServiceType').val(relatedServiceType);
-                    relatedServiceType = undefined;
-                } else {
-                    $('input[name="related_service[]"]').first().prop('checked', true);
-                    $('#inputRelatedServiceType').removeAttr('value');
-                }
-            },
-            always: function() {
-                $('#rowLoading').remove();
-            }
-        }
-    );
-}
-
-function openTicketExpandRelServices() {
-    var rowSelectInfo = jQuery('#rowSelectInfo'),
-        relatedServicesTable = jQuery('#relatedservicestbl'),
-        relatedServiceBtn = jQuery('#btnRelatedServiceExpand'),
-        clientId = jQuery('#clientinput').val();
-
-    relatedServiceBtn.prop('disabled', true).find('span').toggleClass('hidden');
-    WHMCS.http.jqClient.jsonPost(
-        {
-            url: WHMCS.adminUtils.getAdminRouteUrl(
-                '/support/ticket/open/client/' + clientId + '/additional/data'
-            ),
-            data: {
+                contactid: selectedContactId,
                 token: csrfToken
             },
-            success: function (data) {
+            success: function(data) {
+                if (data.contacts) {
+                    $("#contacthtml").html(data.contacts);
+                    $("#contactrow").show();
+                } else {
+                    $("#contactrow").hide();
+                }
+
                 if (data.services) {
-                    relatedServicesTable.find('tbody').children().not('#relatedServiceNone').remove();
                     relatedServicesTable.find('tbody').append(data.services);
-                    if (rowSelectInfo.hasClass('hidden')) {
+                    if (!rowSelectInfo.hasClass('hidden')) {
                         relatedServicesTable.find('td.hidden').removeClass('hidden');
                         relatedServicesTable.find('tr.hidden').removeClass('hidden');
                         rowSelectInfo.addClass('hidden');
                     }
                     if (relatedServiceType) {
-                        jQuery('input[name="related_service[]"][data-type="' + relatedServiceType + '"][value="' + relatedService + '"]')
+                        $('input[name="related_service[]"][data-type="' + relatedServiceType + '"][value="' + relatedService + '"]')
                             .prop('checked', true);
-                        jQuery('#inputRelatedServiceType').val(relatedServiceType);
+                        $('#inputRelatedServiceType').val(relatedServiceType);
                     }
                 }
             },
-            always: function () {
-                relatedServiceBtn.find('span').toggleClass('hidden');
+            always: function() {
+                $('#rowLoading').remove();
             }
         }
     );

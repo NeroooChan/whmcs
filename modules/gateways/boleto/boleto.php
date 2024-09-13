@@ -1,7 +1,6 @@
 <?php
 
 use WHMCS\Database\Capsule;
-use WHMCS\Module\GatewaySetting;
 
 require("../../../init.php");
 $whmcs->load_function('gateway');
@@ -14,8 +13,15 @@ if ( !isset($_SESSION["uid"]) && !isset($_SESSION['adminid']) ) {
     redirSystemURL("", "clientarea.php");
 }
 
-$GATEWAY = GatewaySetting::getForGateway('boleto');
-
+$GATEWAY = array();
+$gwresult = Capsule::table('tblpaymentgateways')
+    ->where('gateway', 'boleto')
+    ->get();
+foreach ($gwresult as $data) {
+    $gVgwsetting = $data->setting;
+    $gVgwvalue = $data->value;
+    $GATEWAY[$gVgwsetting] = $gVgwvalue;
+}
 if (!in_array($GATEWAY['banco'],array('banestes','bb','bradesco','cef','hsbc','itau','nossacaixa','real','unibanco'))) exit;
 
 $data = Capsule::table('tblinvoices')

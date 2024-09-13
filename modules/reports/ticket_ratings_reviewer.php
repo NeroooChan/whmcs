@@ -41,8 +41,7 @@ $results = Capsule::table('tblticketreplies')
         ]
     )
     ->orderBy('date', 'desc')
-    ->get()
-    ->all();
+    ->get();
 $num_rows = count($results);
 
 $reportdata["title"] = "Support Ticket Ratings Reviewer";

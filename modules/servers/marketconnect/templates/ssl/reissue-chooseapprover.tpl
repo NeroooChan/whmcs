@@ -5,7 +5,7 @@
     When reissueing a certificate the domain name cannot be changed and must be exactly the same.
 </div>
 
-<h2>{$LANG.sslcertinfo}</h2>
+{include file="$template/includes/subheader.tpl" title=$LANG.sslcertinfo}
 
 <div class="row">
     <div class="col-sm-3 text-right">
@@ -56,7 +56,7 @@
     </div>
 {/if}
 
-<h2>{$LANG.sslcertapproveremail}</h2>
+{include file="$template/includes/subheader.tpl" title=$LANG.sslcertapproveremail}
 
 <p>{$LANG.sslcertapproveremaildetails}</p>
 

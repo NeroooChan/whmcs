@@ -72,7 +72,7 @@ function stripe_ach_reset_input_to_new()
     jQuery('input[name="paymethod"][value="new"]').iCheck('check');
 
     setTimeout(function() {
-        jQuery('.gateway-errors').slideUp();
+        jQuery('.gateway-errors').hide().addClass('hidden');
     }, 4000);
 }
 
@@ -82,7 +82,9 @@ function handler_open() {
         linkHandler = Plaid.create(
         {
             env: plaidEnvironment,
-            token: plaidLinkToken,
+            clientName: companyName,
+            key: plaidPublicKey,
+            product: ['auth'],
             selectAccount: true,
             onSuccess: function(public_token, metadata) {
                 WHMCS.http.jqClient.jsonPost({
@@ -108,15 +110,15 @@ function handler_open() {
                     },
                     warning: function(error) {
                         displayError.html(error);
-                        if (displayError.not(':visible')) {
-                            displayError.slideDown();
+                        if (displayError.hasClass('hidden')) {
+                            displayError.removeClass('hidden').show();
                         }
                         scrollToGatewayInputError();
                     },
                     fail: function(error) {
                         displayError.html(error);
-                        if (displayError.not(':visible')) {
-                            displayError.slideDown();
+                        if (displayError.hasClass('hidden')) {
+                            displayError.removeClass('hidden').show();
                         }
                         scrollToGatewayInputError();
                     }
@@ -131,8 +133,8 @@ function handler_open() {
 
                 if (err != null) {
                     displayError.html(err);
-                    if (displayError.not(':visible')) {
-                        displayError.slideDown();
+                    if (displayError.hasClass('hidden')) {
+                        displayError.removeClass('hidden').show();
                     }
                     scrollToGatewayInputError();
                 }

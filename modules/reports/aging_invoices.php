@@ -50,8 +50,7 @@ for ( $day = 0; $day < 120; $day += 30) {
         ->where('tblinvoices.duedate', '>=', $enddate)
         ->where('tblinvoices.status', '=', 'Unpaid')
         ->groupBy('tblclients.currency')
-        ->get()
-        ->all();
+        ->get();
     foreach ($results as $result) {
         $currencytotals[$result->currency] = ($result->sum - $result->sum2);
     }
@@ -96,8 +95,7 @@ $results = Capsule::table('tblinvoices')
     ->where('tblinvoices.duedate', '<=', $startdate)
     ->where('tblinvoices.status', '=', 'Unpaid')
     ->groupBy('tblclients.currency')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $currencytotals[$result->currency] = $result->sum;
 }

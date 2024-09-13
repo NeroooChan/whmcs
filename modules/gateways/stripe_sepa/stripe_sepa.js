@@ -51,6 +51,9 @@ function initStripeSEPA()
             if (mandateAcceptanceContainer.not(':visible')) {
                 mandateAcceptanceContainer.show('fast');
             }
+            if (bankAccountHolderContainer.hasClass('hidden')) {
+                bankAccountHolderContainer.hide().removeClass('hidden');
+            }
             if (bankAccountHolderContainer.not(':visible')) {
                 bankAccountHolderContainer.show('fast');
             }
@@ -79,6 +82,9 @@ function initStripeSEPA()
                 if (mandateAcceptanceContainer.not(':visible')) {
                     mandateAcceptanceContainer.show('fast');
                 }
+                if (bankAccountHolderContainer.hasClass('hidden')) {
+                    bankAccountHolderContainer.hide().removeClass('hidden');
+                }
                 if (bankAccountHolderContainer.not(':visible')) {
                     bankAccountHolderContainer.show('fast');
                 }
@@ -106,17 +112,17 @@ function stripe_sepa_iban_change_event(event)
     // Handle real-time validation errors from the iban Element.
     if (event.error && event.error.message.length) {
         displayError.html(event.error.message);
-        if (displayError.not(':visible')) {
-            displayError.slideDown();
+        if (displayError.hasClass('hidden')) {
+            displayError.removeClass('hidden').show();
         }
         frm.find('button[type="submit"]').prop('disabled', false)
             .removeClass('disabled')
             .find('span')
-            .toggle();
+            .toggleClass('hidden');
         scrollToGatewayInputError();
     } else {
-        if (displayError.is(':visible')) {
-            displayError.slideUp();
+        if (!displayError.hasClass('hidden')) {
+            displayError.hide().addClass('hidden');
         }
     }
 }
@@ -145,13 +151,13 @@ function stripe_sepa_form_submit(event)
         if (result.error && result.error.message.length) {
             // Inform the customer that there was an error.
             displayError.html(result.error.message);
-            if (displayError.not(':visible')) {
-                displayError.slideDown();
+            if (displayError.hasClass('hidden')) {
+                displayError.removeClass('hidden').show();
                 submitButton.removeClass('disabled').prop('disabled', false);
             }
         } else {
             // Send the Source to your server to create a charge.
-            displayError.slideUp();
+            displayError.addClass('hidden');
             stripeSourceHandler(result.source);
         }
     });

@@ -42,7 +42,7 @@
     {
         "extensions": ".as",
         "uri": "socket://whois.nic.as",
-        "available": "NOT FOUND"
+        "available": "Available"
     },
     {
         "extensions": ".at,.ac.at,.co.at,.gv.at,.or.at",
@@ -110,9 +110,9 @@
         "available": "no entries found"
     },
     {
-        "extensions": ".com.ec,.org.ec,.net.ec,.mil.ec,.fin.ec,.med.ec,.gov.ec,.ec",
+        "extensions": ".com.ec,.org.ec,.net.ec,.mil.ec,.fin.ec,.med.ec,.gov.ec",
         "uri": "socket://whois.nic.ec",
-        "available": "No Object Found",
+        "available": "No match found",
         "comment": "The registry which operates the .ec TLD requires epp code authorization from an authorized registrar and is not supported by this software. Visit www.nic.ec to check availability."
     },
     {
@@ -197,7 +197,7 @@
     },
     {
         "extensions": ".nu",
-        "uri": "socket://whois.iis.nu",
+        "uri": "socket://whois.nic.nu",
         "available": "not found"
     },
     {
@@ -243,7 +243,7 @@
     {
         "extensions": ".ac.th,.co.th,.go.th,.mi.th,.net.th,.or.th,.in.th",
         "uri": "socket://whois.thnic.net",
-        "available": "No match found"
+        "available": "No match for"
     },
     {
         "extensions": ".tj",
@@ -348,7 +348,7 @@
     {
         "extensions": ".ie",
         "uri": "socket://whois.domainregistry.ie",
-        "available": "Not found"
+        "available": "% Not Registered"
     },
     {
         "extensions": ".hk",
@@ -518,7 +518,7 @@
     {
         "extensions": ".com.ve,.net.ve,.org.ve,.web.ve,.info.ve,.co.ve",
         "uri": "socket://whois.nic.ve",
-        "available": "No entries found"
+        "available": "No match for"
     },
     {
         "extensions": ".tel",
@@ -1248,7 +1248,7 @@
     {
         "extensions": ".sa,.com.sa,.net.sa,.med.sa,.sch.sa,.org.sa,.edu.sa,.gov.sa,.pub.sa",
         "uri": "socket://whois.nic.net.sa",
-        "available": "No Match for"
+        "available": "Error."
     },
     {
         "extensions": ".lat",

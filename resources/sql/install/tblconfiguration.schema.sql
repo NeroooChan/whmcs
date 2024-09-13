@@ -9,13 +9,12 @@ DROP TABLE IF EXISTS `tblconfiguration`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tblconfiguration` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `setting` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `setting` text COLLATE utf8_unicode_ci NOT NULL,
   `value` text COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  KEY `setting` (`setting`(64)),
-  CONSTRAINT whmcs_setting_unique UNIQUE (`setting`)
+  KEY `setting` (`setting`(32))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

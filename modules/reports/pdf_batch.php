@@ -3,7 +3,6 @@
 use WHMCS\Carbon;
 use WHMCS\Database\Capsule;
 use WHMCS\Invoices;
-use WHMCS\Module\GatewaySetting;
 
 if (!defined("WHMCS")) {
     die("This file cannot be accessed directly");
@@ -32,9 +31,12 @@ if (!$range) {
 $clientsDropDown = $aInt->clientsDropDown($userid, false, 'userid', true);
 
 $gatewayOptions = '';
-
-foreach (GatewaySetting::getActiveGatewayFriendlyNames() as $gateway => $friendlyName) {
-    $gatewayOptions .= "<option value=\"{$gateway}\" selected>{$friendlyName}</option>";
+$results = Capsule::table('tblpaymentgateways')
+    ->where('setting', '=', 'name')
+    ->orderBy('order', 'asc')
+    ->pluck('gateway', 'value');
+foreach ($results as $gateway => $value) {
+    $gatewayOptions .= "<option value=\"{$value}\" selected>{$gateway}</option>";
 }
 
 $statusOptions = '';

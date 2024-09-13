@@ -1,7 +1,8 @@
 <link type="text/css" rel="stylesheet" href="{$BASE_PATH_CSS}/normalize.css" property="stylesheet">
-<link type="text/css" rel="stylesheet" href="{assetPath file="ion.rangeSlider.css"}" property="stylesheet">
-<link type="text/css" rel="stylesheet" href="{assetPath file="ion.rangeSlider.skinHTML5.css"}" property="stylesheet">
-<link type="text/css" rel="stylesheet" href="{assetPath file="style.css"}" property="stylesheet">
+<link type="text/css" rel="stylesheet" href="{$WEB_ROOT}/templates/orderforms/{$carttpl}/css/ion.rangeSlider.css" property="stylesheet">
+<link type="text/css" rel="stylesheet" href="{$WEB_ROOT}/templates/orderforms/{$carttpl}/css/ion.rangeSlider.skinHTML5.css" property="stylesheet">
+<link type="text/css" rel="stylesheet" href="{$WEB_ROOT}/templates/orderforms/{$carttpl}/css/style.css" property="stylesheet">
+
 {if $showSidebarToggle}
     <button type="button" class="btn btn-default btn-sm" id="btnShowSidebar">
         <i class="fas fa-arrow-circle-right"></i>
@@ -10,10 +11,10 @@
 {/if}
 
 <div class="row row-product-selection">
-    <div class="col-md-3 sidebar product-selection-sidebar" id="universalSliderSidebar">
+    <div class="col-xs-3 product-selection-sidebar" id="universalSliderSidebar">
         {include file="orderforms/standard_cart/sidebar-categories.tpl"}
     </div>
-    <div class="col-md-12">
+    <div class="col-xs-12">
 
         <div id="order-universal_slider">
             <div class="group-headlines">
@@ -40,7 +41,7 @@
                 {/if}
             </div>
 
-            <div class="striped-container clearfix py-1">
+            <div class="striped-container clearfix">
 
                 <div class="main-container">
 
@@ -71,7 +72,7 @@
                                             {/foreach}
                                         </div>
                                     </div>
-                                    <div id="product{$productId}-price" class="col-md-3 hidden-sm d-none d-md-block">
+                                    <div id="product{$productId}-price" class="col-md-3 hidden-sm">
                                         <div class="price-container container-with-progress-bar text-center">
                                             {$product.name} {$LANG.orderprice}
                                             <span class="price-cont">
@@ -100,7 +101,7 @@
                                                     {$LANG.outofstock}
                                                 </span>
                                             {else}
-                                                <a href="{$WEB_ROOT}/cart.php?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="order-button" id="product{$productId}-order-button">
+                                                <a href="{$smarty.server.PHP_SELF}?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="order-button" id="product{$productId}-order-button">
                                                     {$LANG.ordernowbutton}
                                                 </a>
                                             {/if}
@@ -119,7 +120,7 @@
                                             {$product.description}
                                         {/if}
                                     </div>
-                                    <div class="col-sm-3 visible-sm d-block d-md-none">
+                                    <div class="col-sm-3 visible-sm">
                                         <div id="product{$productId}-price-small" class="price-container container-with-progress-bar text-center">
                                             {$product.name} {$LANG.orderprice}
                                             <span class="price-cont">
@@ -148,7 +149,7 @@
                                                 {$LANG.outofstock}
                                             </span>
                                             {else}
-                                                <a href="{$WEB_ROOT}/cart.php?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="order-button" id="product{$productId}-order-button">
+                                                <a href="{$smarty.server.PHP_SELF}?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="order-button" id="product{$productId}-order-button">
                                                     {$LANG.ordernowbutton}
                                                 </a>
                                             {/if}
@@ -164,7 +165,7 @@
             {if count($productGroup.features) > 0}
                 <div class="group-features">
                     <div class="title">
-                        <span class="primary-bg-color">
+                        <span>
                             {$LANG.orderForm.includedWithPlans}
                         </span>
                     </div>
@@ -179,7 +180,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="{assetPath file="ion.rangeSlider.js"}"></script>
+<script type="text/javascript" src="{$WEB_ROOT}/templates/orderforms/{$carttpl}/js/ion.rangeSlider.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function(){
         var products = [],

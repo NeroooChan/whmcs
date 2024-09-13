@@ -22,7 +22,7 @@
                 &nbsp;
                 {$_ADMINLANG.global.emailAddressNotVerified}
                 <div class="pull-right">
-                    <button id="btnResendVerificationEmail" class="btn btn-default btn-sm" data-clientid="{$clientsdetails.userid}" data-successmsg="{$_ADMINLANG.global.emailSent}" data-errormsg="{$_ADMINLANG.global.erroroccurred}">
+                    <button id="btnResendVerificationEmail" class="btn btn-default btn-sm">
                         {$_ADMINLANG.global.resendEmail}
                     </button>
                 </div>
@@ -46,7 +46,7 @@
                     <tr><td width="110">{$_ADMINLANG.fields.firstname}</td><td>{$clientsdetails.firstname}</td></tr>
                     <tr class="altrow"><td>{$_ADMINLANG.fields.lastname}</td><td>{$clientsdetails.lastname}</td></tr>
                     <tr><td>{$_ADMINLANG.fields.companyname}</td><td>{$clientsdetails.companyname}</td></tr>
-                    <tr class="altrow"><td>{$_ADMINLANG.fields.email}</td><td>{$clientsdetails.email}</td></tr>
+                    <tr class="altrow"><td>{$_ADMINLANG.fields.email}</td><td>{$clientsdetails.email}{if $emailVerificationEnabled} {if $emailVerified}<span class="label label-success">{$_ADMINLANG.clients.emailVerified}</span>{else}<span class="label label-danger">{$_ADMINLANG.clients.emailUnverified}</span>{/if}{/if}</td></tr>
                     <tr><td>{$_ADMINLANG.fields.address1}</td><td>{$clientsdetails.address1}</td></tr>
                     <tr class="altrow"><td>{$_ADMINLANG.fields.address2}</td><td>{$clientsdetails.address2}</td></tr>
                     <tr><td>{$_ADMINLANG.fields.city}</td><td>{$clientsdetails.city}</td></tr>
@@ -62,7 +62,8 @@
                     {/if}
                 </table>
                 <ul>
-                    <li><a id="summary-login-as-owner" href="#"><img src="images/icons/clientlogin.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.loginasowner}</a></li>
+                    <li><a id="summary-reset-password" href="clientssummary.php?userid={$clientsdetails.userid}&resetpw=true&token={$csrfToken}"><img src="images/icons/resetpw.png" border="0" align="absmiddle" /> {$_ADMINLANG.clients.resetsendpassword}</a></li>
+                    <li><a id="summary-login-as-client" href="../dologin.php?username={$clientsdetails.email|urlencode}&language={$adminLanguage}"><img src="images/icons/clientlogin.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.loginasclient}</a></li>
                 </ul>
             </div>
 
@@ -131,15 +132,9 @@
                     </tr>
                 </table>
                 <ul>
-                    {if in_array('Create Invoice', $admin_perms)}
-                        <li><a href="invoices.php?action=createinvoice&userid={$clientsdetails.userid}&token={$csrfToken}"><img src="images/icons/invoicesedit.png" border="0" align="absmiddle" /> {$_ADMINLANG.invoices.create}</a></li>
-                    {/if}
-                    {if in_array('Create Add Funds Invoice', $admin_perms)}
-                        <li><a href="#" data-toggle="modal" data-target="#modalAddFunds"><img src="images/icons/addfunds.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.createaddfunds}</a></li>
-                    {/if}
-                    {if in_array('Generate Due Invoices', $admin_perms)}
-                        <li><a href="#" data-toggle="modal" data-target="#modalGenerateInvoices"><img src="images/icons/ticketspredefined.png" border="0" align="absmiddle" /> {$_ADMINLANG.invoices.geninvoices}</a></li>
-                    {/if}
+                    <li><a href="invoices.php?action=createinvoice&userid={$clientsdetails.userid}&token={$csrfToken}"><img src="images/icons/invoicesedit.png" border="0" align="absmiddle" /> {$_ADMINLANG.invoices.create}</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#modalAddFunds"><img src="images/icons/addfunds.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.createaddfunds}</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#modalGenerateInvoices"><img src="images/icons/ticketspredefined.png" border="0" align="absmiddle" /> {$_ADMINLANG.invoices.geninvoices}</a></li>
                     <li><a href="clientsbillableitems.php?userid={$clientsdetails.userid}&action=manage"><img src="images/icons/billableitems.png" border="0" align="absmiddle" /> {$_ADMINLANG.billableitems.additem}</a></li>
                     <li><a href="#" id="manageCredits" onClick="window.open('clientscredits.php?userid={$clientsdetails.userid}','','width=800,height=350,scrollbars=yes');return false"><img src="images/icons/income.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.managecredits}</a></li>
                     <li><a href="quotes.php?action=manage&userid={$clientsdetails.userid}"><img src="images/icons/quotes.png" border="0" align="absmiddle" /> {$_ADMINLANG.quotes.createnew}</a></li>
@@ -208,13 +203,7 @@
                 <div class="title">{$_ADMINLANG.clientsummary.emailsheading}</div>
                 <table class="clientssummarystats" cellspacing="0" cellpadding="2">
                     {foreach key=num from=$lastfivemail item=email}
-                        <tr class="{cycle values=",altrow"}">
-                            <td align="center">
-                                {$email.date} - <a href="clientsemails.php?&displaymessage=true&id={$email.id}" class="open-modal" data-modal-title="{lang key='emails.viewemailmessage'|escape}">
-                                    {$email.subject}
-                                </a>
-                            </td>
-                        </tr>
+                        <tr class="{cycle values=",altrow"}"><td align="center">{$email.date} - <a href="#" onClick="window.open('clientsemails.php?&displaymessage=true&id={$email.id}','','width=650,height=400,scrollbars=yes');return false">{$email.subject}</a></td></tr>
                     {foreachelse}
                         <tr><td align="center">{$_ADMINLANG.clientsummary.noemails}</td></tr>
                     {/foreach}
@@ -234,13 +223,9 @@
                     <li><a href="supporttickets.php?action=open&userid={$clientsdetails.userid}"><img src="images/icons/ticketsopen.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.newticket}</a></li>
                     <li><a href="supporttickets.php?view=any&client={$clientsdetails.userid}"><img src="images/icons/ticketsother.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.viewtickets}</a></li>
                     <li><a href="{if $affiliateid}affiliates.php?action=edit&id={$affiliateid}{else}clientssummary.php?userid={$clientsdetails.userid}&activateaffiliate=true&token={$csrfToken}{/if}"><img src="images/icons/affiliates.png" border="0" align="absmiddle" /> {if $affiliateid}{$_ADMINLANG.clientsummary.viewaffiliate}{else}{$_ADMINLANG.clientsummary.activateaffiliate}{/if}</a></li>
-                    <li>
-                        <a href="clientsmerge.php?userid={$clientsdetails.userid}" class="open-modal" data-modal-title="{lang key='clients.mergeclient'}" data-btn-submit-id="btnMerge" data-btn-submit-label="{lang key='invoices.merge'}">
-                            <img src="images/icons/clients.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.mergeclients}
-                        </a>
-                    </li>
+                    <li><a href="#" onClick="window.open('clientsmerge.php?userid={$clientsdetails.userid}','movewindow','width=500,height=280,top=100,left=100,scrollbars=1');return false"><img src="images/icons/clients.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.mergeclients}</a></li>
                     <li><a href="#" onClick="closeClient();return false" style="color:#000000;"><img src="images/icons/delete.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.closeclient}</a></li>
-                    <li><a id="btnDeleteClient" href="#" style="color:#CC0000;"><img src="images/icons/delete.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.deleteclient}</a></li>
+                    <li><a href="#" onClick="deleteClient();return false" style="color:#CC0000;"><img src="images/icons/delete.png" border="0" align="absmiddle" /> {$_ADMINLANG.clientsummary.deleteclient}</a></li>
                     <li>
                         <a href="reports.php?report=client&userid={$clientsdetails.userid}">
                             <img src="images/icons/csvexports.png" border="0" align="absmiddle" />
@@ -323,7 +308,7 @@
                             <tr>
                                 <td><input type="checkbox" name="selproducts[]" value="{$product.id}" class="checkprods" /></td>
                                 <td><a href="clientsservices.php?userid={$clientsdetails.userid}&id={$product.id}">{$product.idshort}</a></td>
-                                <td style="padding-left:5px;padding-right:5px">{$product.dpackage} - <a href="{$product.domainLink}" target="_blank">{$product.domain}</a></td>
+                                <td style="padding-left:5px;padding-right:5px">{$product.dpackage} - <a href="http://{$product.domain}" target="_blank">{$product.domain}</a></td>
                                 <td>{$product.amount}</td>
                                 <td>{$product.dbillingcycle}</td>
                                 <td>{$product.regdate}</td>
@@ -363,7 +348,7 @@
                             <tr>
                                 <td><input type="checkbox" name="seladdons[]" value="{$addon.id}" class="checkaddons" /></td>
                                 <td><a href="clientsservices.php?userid={$clientsdetails.userid}&id={$addon.serviceid}&aid={$addon.id}">{$addon.idshort}</a></td>
-                                <td style="padding-left:5px;padding-right:5px">{$addon.addonname}<br>{$addon.dpackage} - <a href="{$addon.domainLink}" target="_blank">{$addon.domain}</a></td>
+                                <td style="padding-left:5px;padding-right:5px">{$addon.addonname}<br>{$addon.dpackage} - <a href="http://{$addon.domain}" target="_blank">{$addon.domain}</a></td>
                                 <td>{$addon.amount}</td>
                                 <td>{$addon.dbillingcycle}</td>
                                 <td>{$addon.regdate}</td>
@@ -484,7 +469,7 @@
                         {$_ADMINLANG.global.apply}
                     </button>
                 </div>
-                <div class="col-lg-9 col-lg-pull-3 col-xs-12 form-inline">
+                <div class="col-lg-9 col-lg-pull-3 col-xs-12">
                     <span class="heading visible-lg-inline-block">{$_ADMINLANG.global.bulkActions}</span>
                     <select name="status" class="form-control select-inline">
                         <option value="">- {$_ADMINLANG.support.setStatus} -</option>
@@ -497,24 +482,13 @@
                         <option value="Fraud">{$_ADMINLANG.status.fraud}</option>
                     </select>
                     {$paymentmethoddropdown|replace:$_ADMINLANG.global.nochange:$_ADMINLANG.clientsummary.setPaymentMethod}
-                    <div class="form-group">
-                        <div class="form-inline">
-                            <div class="form-group">
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" name="overideautosuspend" id="overridesuspend" />
-                                    {$_ADMINLANG.services.nosuspenduntil}
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-group date-picker-prepend-icon">
-                                    <label for="overridesuspend" class="field-icon">
-                                        <i class="fal fa-calendar-alt"></i>
-                                    </label>
-                                    <input type="text" name="overidesuspenduntil" class="form-control date-picker-single future" data-drops="up" data-original-value="" value="" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <span>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="overideautosuspend" id="overridesuspend" />
+                            {$_ADMINLANG.services.nosuspenduntil}
+                            <input type="text" name="overidesuspenduntil" class="input-inline form-control date-picker-single future" data-drops="up" data-original-value="" value="" />
+                        </label>
+                    </span>
                 </div>
             </div>
 
@@ -540,13 +514,7 @@
                             {$_ADMINLANG.fields.nextduedate}
                         </td>
                         <td class="fieldarea">
-                            <div class="form-group date-picker-prepend-icon">
-                                <label for="inputDateCreated" class="field-icon">
-                                    <i class="fal fa-calendar-alt"></i>
-                                </label>
-                                <input type="text" id="nextDueDate" name="nextduedate" class="input-inline form-control date-picker-single future" data-drops="up" data-original-value="" value="" />
-                                &nbsp;&nbsp; <input type="checkbox" name="proratabill" id="proratabill" /> {$_ADMINLANG.clientsummary.createproratainvoice}
-                            </div>
+                            <input type="text" id="nextDueDate" name="nextduedate" class="input-inline form-control date-picker-single future" data-drops="up" data-original-value="" value="" /> &nbsp;&nbsp; <input type="checkbox" name="proratabill" id="proratabill" /> {$_ADMINLANG.clientsummary.createproratainvoice}
                         </td>
                         <td width="15%" class="fieldlabel">
                             {$_ADMINLANG.fields.billingcycle}
@@ -586,14 +554,3 @@
     </form>
 
 </div>
-
-<form method="post" action="{routePath('admin-client-login', $clientsdetails.id)}" id="frmLoginAsOwner"></form>
-
-<script>
-    $(document).ready(function() {
-        $('#summary-login-as-owner').click(function(e) {
-            e.preventDefault();
-            $('#frmLoginAsOwner').submit();
-        });
-    });
-</script>

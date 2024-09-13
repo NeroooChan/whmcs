@@ -132,11 +132,7 @@ if ($range) {
     if ($adminId) {
         $query->where('admin_id', $adminId);
     }
-    $result = $query
-        ->orderBy('date')
-        ->get(['tblcredit.*', 'tblclients.firstname', 'tblclients.lastname'])
-        ->all();
-
+    $result = $query->orderBy('date')->get(['tblcredit.*', 'tblclients.firstname', 'tblclients.lastname']);
     /** @var stdClass $data */
     foreach ($result as $data) {
         $id = $data->id;

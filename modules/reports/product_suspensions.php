@@ -17,8 +17,7 @@ $results = Capsule::table('tblhosting')
     ->join('tblproducts', 'tblproducts.id', '=', 'tblhosting.packageid')
     ->where('domainstatus', '=', 'Suspended')
     ->orderBy('id', 'asc')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $serviceid = $result->id;
     $userid = $result->userid;

@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="{assetPath file="style.css"}" property="stylesheet" />
+<link rel="stylesheet" type="text/css" href="{$WEB_ROOT}/templates/orderforms/{$carttpl}/css/style.css" property="stylesheet" />
 <script>
     jQuery(document).ready(function () {
         jQuery('#btnShowSidebar').click(function () {
@@ -22,10 +22,10 @@
     </button>
 {/if}
 <div class="row row-product-selection">
-    <div class="col-md-3 sidebar product-selection-sidebar" id="supremeComparisonSidebar">
+    <div class="col-xs-3 product-selection-sidebar" id="supremeComparisonSidebar">
         {include file="orderforms/standard_cart/sidebar-categories.tpl"}
     </div>
-    <div class="col-md-12">
+    <div class="col-xs-12">
         <div id="order-supreme_comparison">
             <div class="product-group-heading">
                 <div class="product-group-headline">
@@ -57,10 +57,10 @@
                         <li id="product{$product@iteration}">
                             <div class="price-table">
                                 <div class="product-icon">
-                                    <img src="{assetPath ns="img" file="bg{$count}.png"}" width="155" height="95" alt="Product {$product@iteration}" />
+                                    <img src="{$WEB_ROOT}/templates/orderforms/{$carttpl}/img/bg{$count}.png" width="155" height="95" alt="Product {$product@iteration}" />
                                 </div>
                                 <div class="product-title">
-                                    <h3 id="product{$product@iteration}-name" class="font-size-24">
+                                    <h3 id="product{$product@iteration}-name">
                                         {$product.name}
                                     </h3>
                                     {if $product.tagLine}
@@ -129,7 +129,7 @@
                                                 </div>
                                             </div>
                                         {else}
-                                            <a href="{$WEB_ROOT}/cart.php?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" id="product{$product@iteration}-order-button">
+                                            <a href="{$smarty.server.PHP_SELF}?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" id="product{$product@iteration}-order-button">
                                                 <div class="order-now">
                                                     {$LANG.ordernowbutton}
                                                 </div>
@@ -153,7 +153,7 @@
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="head-area">
-                                <span class="primary-bg-color">
+                                <span>
                                     {$LANG.orderForm.includedWithPlans}
                                 </span>
                             </div>

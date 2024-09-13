@@ -241,11 +241,7 @@ if (count($incfields)) {
         $query->whereBetween('completed_date', [$fromdate, $todate]);
     }
 
-    $results = $query
-        ->join('tblclients', 'tblclients.id', '=', 'tblhosting.userid')
-        ->get()
-        ->all();
-
+    $results = $query->join('tblclients', 'tblclients.id', '=', 'tblhosting.userid')->get();
     foreach ($results as $result) {
         $result = (array) $result;
         if (isset($result['paymentmethod'])) {

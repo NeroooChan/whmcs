@@ -9,7 +9,7 @@ use WHMCS\User\AdminLog;
 /**
  * Staff Widget.
  *
- * @copyright Copyright (c) WHMCS Limited 2005-2020
+ * @copyright Copyright (c) WHMCS Limited 2005-2018
  * @license https://www.whmcs.com/license/ WHMCS Eula
  */
 class Staff extends AbstractWidget
@@ -28,16 +28,14 @@ class Staff extends AbstractWidget
     public function generateOutput($data)
     {
         $staffOutput = '';
-        //phpcs:disable
         foreach ($data as $session) {
             $staffOutput .= '<div class="staff">'
-                . '<img src="https://www.gravatar.com/avatar/' . $session['admin']['gravatarHash'] . '?s=60&d=mp" width="60" height="60" alt="Gravatar"/>'
+                . '<img src="https://www.gravatar.com/avatar/' . $session['admin']['gravatarHash'] . '?s=60&d=mm" width="60" height="60" />'
                 . '<div class="name">' . $session['admin']['firstname'] . ' ' . $session['admin']['lastname'] . '</div>'
                 . '<div class="note text-muted">'
                 . Carbon::createFromFormat('Y-m-d H:i:s', $session['lastvisit'])->diffForHumans() . '</div>'
                 . '</div>';
         }
-        //phpcs:enable
 
         return <<<EOF
     <div class="widget-staff-container clearfix">

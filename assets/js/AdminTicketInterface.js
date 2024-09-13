@@ -28,12 +28,6 @@ $(document).ready(function(){
         return false;
     });
 
-    loadTicketCcs();
-
-    $('#selectUserid').on('change', function() {
-        loadTicketCcs();
-    });
-
     $("#frmAddTicketReply").submit(function (e, options) {
         options = options || {};
 
@@ -357,17 +351,6 @@ $(document).ready(function(){
             jQuery('#btnRelatedServiceExpand').prop('disabled', false).removeClass('disabled');
         }
     });
-
-    jQuery(document).on('click', '#relatedservicestbl tr', function() {
-        if(!jQuery('#relatedservicestbl .related-service').hasClass('hidden')) {
-            jQuery(this).find('input').prop('checked', true);
-        }
-    });
-
-    jQuery(document).on('click', '#relatedservicestbl tr a', function(e) {
-        e.stopPropagation();
-    });
-
 });
 
 var replyingAdminMessage = $("#replyingAdminMsg");
@@ -516,7 +499,6 @@ function post_validate_and_change(vars, updateElement, newValue, self)
                     done = true;
                     updateElement.val(newValue);
                     jQuery('#frmTicketOptions').find('[name=' + self.data('update-type') + ']').val(newValue);
-                    jQuery.growl.notice({ title: "", message: "Saved successfully!" });
                 }
             } else {
                 // access denied
@@ -627,57 +609,4 @@ function post_validate_changes_and_submit(form, submitButton, swapClass)
             submitButton.find('i').removeClass('fa-spinner fa-spin').addClass(swapClass).end();
         }
     });
-}
-
-function loadTicketCcs()
-{
-    var userId = jQuery('#selectUserid').val(),
-        currentCcs = jQuery('#inputTicketCc').val().split(',');
-    if (!userId) {
-        userId = 0;
-    }
-    WHMCS.http.jqClient.jsonPost(
-        {
-            url: WHMCS.adminUtils.getAdminRouteUrl(
-                '/support/ticket/open/client/' + userId + '/additional/data'
-            ),
-            data: {
-                token: csrfToken,
-                showTen: true
-            },
-            success: function(data) {
-                var ccs = jQuery(".selectize-ticketCc")[0].selectize;
-                if (typeof ccs !== 'undefined') {
-                    ccs.clearOptions();
-                    if (data.ccs.length) {
-                        var i, n, ccIndex;
-                        ccs.addOption(data.ccs);
-                        for (i = 0, n = data.ccs.length; i < n; i++) {
-                            var ccData = data.ccs[i];
-                            ccIndex = currentCcs.findIndex(function(checkValue){
-                                return checkValue === ccData.text;
-                            });
-                            if (ccIndex !== -1) {
-                                ccs.addItem(ccData.text, true);
-                                currentCcs.splice(ccIndex, 1);
-                            }
-                        }
-                    }
-                    if (currentCcs.length) {
-                        currentCcs.forEach(function (value) {
-                            if (value) {
-                                ccs.addOption(
-                                    {
-                                        name: value,
-                                        text: value
-                                    }
-                                );
-                            }
-                        })
-                        ccs.addItems(currentCcs, true);
-                    }
-                }
-            }
-        }
-    );
 }

@@ -35,8 +35,7 @@ $results = Capsule::table('tblaffiliates')
     )
     ->join('tblclients', 'tblclients.id', '=', 'tblaffiliates.clientid')
     ->orderBy('visitors', 'desc')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $affid = $result->id;
     $clientid = $result->clientid;

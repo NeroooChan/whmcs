@@ -13,7 +13,6 @@ CREATE TABLE `tbladdons` (
   `name` text COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `billingcycle` text COLLATE utf8_unicode_ci NOT NULL,
-  `allowqty` tinyint(1) NOT NULL DEFAULT '0',
   `tax` tinyint(1) NOT NULL,
   `showorder` tinyint(1) NOT NULL,
   `hidden` tinyint(1) NOT NULL DEFAULT '0',

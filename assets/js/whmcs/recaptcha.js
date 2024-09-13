@@ -1,13 +1,10 @@
 /**
  * reCaptcha module
  *
- * @copyright Copyright (c) WHMCS Limited 2005-2020
+ * @copyright Copyright (c) WHMCS Limited 2005-2018
  * @license http://www.whmcs.com/license/ WHMCS Eula
  */
-var recaptchaLoadComplete = false,
-    recaptchaCount = 0,
-    recaptchaType = 'recaptcha',
-    recaptchaValidationComplete = false;
+var recaptchaLoadComplete = false;
 
 (function(module) {
     if (!WHMCS.hasModule('recaptcha')) {
@@ -20,43 +17,41 @@ var recaptchaLoadComplete = false,
             if (recaptchaLoadComplete) {
                 return;
             }
-            var postLoad = [],
-                recaptchaForms = jQuery(".btn-recaptcha").parents('form'),
-                isInvisible = false;
+            var postLoad = [];
+            var recaptchaForms = jQuery(".btn-recaptcha").parents('form');
             recaptchaForms.each(function (i, el){
                 if (typeof recaptchaSiteKey === 'undefined') {
                     console.log('Recaptcha site key not defined');
                     return;
                 }
-                recaptchaCount += 1;
-                var frm = jQuery(el),
-                    btnRecaptcha = frm.find(".btn-recaptcha"),
-                    required = (typeof requiredText !== 'undefined') ? requiredText : 'Required',
-                    recaptchaId = 'divDynamicRecaptcha' + recaptchaCount;
-
-                isInvisible = btnRecaptcha.hasClass('btn-recaptcha-invisible')
+                var frm = jQuery(el);
+                var btnRecaptcha = frm.find(".btn-recaptcha");
+                var isInvisible = btnRecaptcha.hasClass('btn-recaptcha-invisible'),
+                    required = (typeof requiredText !== 'undefined') ? requiredText : 'Required';
 
                 // if no recaptcha element, make one
-                var recaptchaContent = frm.find('#' + recaptchaId + ' .g-recaptcha'),
+                var recaptchaContent = frm.find("#divDynamicRecaptcha .g-recaptcha"),
                     recaptchaElement = frm.find('.recaptcha-container'),
                     appendElement = frm;
 
                 if (recaptchaElement.length) {
-                    recaptchaElement.attr('id', recaptchaElement.attr('id') + recaptchaCount);
                     appendElement = recaptchaElement;
                 }
                 if (!recaptchaContent.length) {
-                    appendElement.append('<div id="#' + recaptchaId + '" class="g-recaptcha"></div>');
-                    recaptchaContent = appendElement.find('#' + recaptchaId);
+                    appendElement.append('<div id="divDynamicRecaptcha" class="g-recaptcha" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="' + required + '"></div>');
+                    recaptchaContent = appendElement.find("#divDynamicRecaptcha");
                 }
                 // propagate invisible recaptcha if necessary
-                if (!isInvisible) {
-                    recaptchaContent.data('toggle', 'tooltip')
-                        .data('placement', 'bottom')
-                        .data('trigger', 'manual')
-                        .attr('title', required)
-                        .hide();
+                if (isInvisible) {
+                    if (recaptchaContent.data('size') !== 'invisible') {
+                        recaptchaContent.attr('data-size', 'invisible');
+                    }
+                } else {
+                    recaptchaContent.hide()
                 }
+
+                // ensure site key is available to grecaptcha
+                recaptchaContent.attr('data-sitekey', recaptchaSiteKey);
 
 
                 // alter form to work around JS behavior on .submit() when there
@@ -70,26 +65,22 @@ var recaptchaLoadComplete = false,
 
                 // make callback for grecaptcha to invoke after
                 // injecting token & make it known via data-callback
-                var funcName = recaptchaId + 'Callback';
+                var funcName = 'recaptchaCallback' + i;
                 window[funcName] = function () {
                     if (isInvisible) {
                         frm.submit();
                     }
                 };
+                recaptchaContent.attr('data-callback', funcName);
 
                 // setup an on form submit event to ensure that we
                 // are allowing required field validation to occur before
                 // we do the invisible recaptcha checking
                 if (isInvisible) {
-                    recaptchaType = 'invisible';
-                    frm.on('submit.recaptcha', function (event) {
-                        var recaptchaId = frm.find('.g-recaptcha').data('recaptcha-id');
-                        if (!grecaptcha.getResponse(recaptchaId).trim()) {
+                    frm.on('submit', function (event) {
+                        if (!grecaptcha.getResponse().trim()) {
                             event.preventDefault();
-                            grecaptcha.execute(recaptchaId);
-                            recaptchaValidationComplete = false;
-                        } else {
-                            recaptchaValidationComplete = true;
+                            grecaptcha.execute();
                         }
                     });
                 } else {
@@ -105,29 +96,11 @@ var recaptchaLoadComplete = false,
                 }
             });
 
-            window.recaptchaLoadCallback = function() {
-                jQuery('.g-recaptcha').each(function(i, el) {
-                    var element = jQuery(el),
-                        frm = element.closest('form'),
-                        btn = frm.find('.btn-recaptcha'),
-                        idToUse = element.attr('id').substring(1);
-                    var recaptchaId = grecaptcha.render(
-                        el,
-                        {
-                            sitekey: recaptchaSiteKey,
-                            size: (btn.hasClass('btn-recaptcha-invisible')) ? 'invisible' : 'normal',
-                            callback: idToUse + 'Callback'
-                        }
-                    );
-                    element.data('recaptcha-id', recaptchaId);
-                });
-            }
-
             // fetch/invoke the grecaptcha lib
             if (recaptchaForms.length) {
-                var gUrl = "https://www.google.com/recaptcha/api.js?onload=recaptchaLoadCallback&render=explicit";
+                var gUrl = "https://www.google.com/recaptcha/api.js";
                 jQuery.getScript(gUrl, function () {
-                    for(var i = postLoad.length - 1; i >= 0 ; i--){
+                    for(var i = postLoad.length -1; i >= 0 ; i--){
                         postLoad[i]();
                     }
                 });

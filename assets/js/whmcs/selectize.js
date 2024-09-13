@@ -30,16 +30,14 @@ function () {
     this.clientSearch = function () {
         var itemDecorator = function(item, escape) {
             if (typeof dropdownSelectClient === "function") {
-                if (jQuery(".selectize-dropdown-content > div").length === 0) {
-                    // updates DOM for admin/supporttickets.php
-                    dropdownSelectClient(
-                        escape(item.id),
-                        escape(item.name)
+                // updates DOM for admin/supporttickets.php
+                dropdownSelectClient(
+                    escape(item.id),
+                    escape(item.name)
                         + (item.companyname ? ' (' + escape(item.companyname) + ')' : '')
                         + (item.id > 0 ? ' - #' + escape(item.id) : ''),
-                        escape(item.email)
-                    );
-                }
+                    escape(item.email)
+                );
             }
             return '<div><span class="name">' + escape(item.name) +
                 (item.companyname ? ' (' + escape(item.companyname) + ')' : '')  +
@@ -55,94 +53,24 @@ function () {
             var element = $(this);
             var configuration = {
                 'valueField': element.data('value-field'),
-                allowEmptyOption: (element.data('allow-empty-option') === 1),
                 'labelField': 'name', //legacy? shouldn't be required with render
                 'render': {
                     item: itemDecorator
                 },
-                optgroupField: 'status',
-                optgroupLabelField: 'name',
-                optgroupValueField: 'id',
-                optgroups: [
-                    {$order: 1, id: 'active', name: element.data('active-label')},
-                    {$order: 2, id: 'inactive', name: element.data('inactive-label')}
-                ],
                 'load': module.builder.onLoadEvent(
                     element.data('search-url'),
                     function (query) {
                         return {
                             dropdownsearchq: query,
-                            clientId: instance.currentValue,
-                            showNoneOption: (element.data('allow-empty-option') === 1),
-                        };
-                    }
-                ),
-                'onChange': function(value) {
-                    // Updates DOM for admin/supporttickets.php
-                    if (value && typeof dropdownSelectClient === 'function') {
-                        value = parseInt(value);
-                        var newSelection = jQuery(".selectize-dropdown-content div[data-value|='" + value + "']");
-                        dropdownSelectClient(
-                            value,
-                            newSelection.children("span.name").text(),
-                            newSelection.children("span.email").text()
-                        );
-                    }
-                }
-            };
-
-            var instance = module.clients(element, undefined, configuration);
-
-            instance.on('change', module.builder.onChangeEvent(instance, '#goButton'));
-
-            return selectized.push(instance);
-        });
-
-        if (selectized.length > 1) {
-            return selectized;
-        }
-
-        return selectized[0];
-
-    };
-
-    this.userSearch = function () {
-        var itemDecorator = function(item, escape) {
-            var idAppend = '',
-                isNumeric = !isNaN(item.id);
-
-            if (isNumeric && item.id > 0) {
-                idAppend = ' - #' + escape(item.id);
-            }
-            return '<div><span class="name">' + escape(item.name) + idAppend + '</span></div>';
-        };
-
-        var selector ='.selectize-user-search';
-        var selectElement = jQuery(selector);
-
-        var module = this;
-        var selectized = [];
-        selectElement.each(function (){
-            var element = $(this);
-            var configuration = {
-                'valueField': element.data('value-field'),
-                'labelField': 'name',
-                'render': {
-                    item: itemDecorator
-                },
-                'preload': false,
-                'load': module.builder.onLoadEvent(
-                    element.data('search-url'),
-                    function (query) {
-                        return {
-                            token: csrfToken,
-                            search: query
+                            clientId: instance.currentValue
                         };
                     }
                 )
             };
 
             var instance = module.users(selector, undefined, configuration);
+
+            instance.on('change', module.builder.onChangeEvent(instance, '#goButton'));
 
             return selectized.push(instance);
         });
@@ -164,19 +92,6 @@ function () {
      * @param configuration
      * @returns {Selectize}
      */
-    this.clients = function (selector, options, configuration) {
-        var instance = this.register(
-            selector,
-            options,
-            WHMCS.selectize.optionDecorator.client,
-            configuration
-        );
-
-        instance.settings.searchField = ['name', 'email', 'companyname'];
-
-        return instance;
-    };
-
     this.users = function (selector, options, configuration) {
         var instance = this.register(
             selector,
@@ -185,7 +100,7 @@ function () {
             configuration
         );
 
-        instance.settings.searchField = ['name', 'email'];
+        instance.settings.searchField = ['name', 'email', 'companyname'];
 
         return instance;
     };
@@ -308,7 +223,7 @@ function () {
     };
 
     this.optionDecorator = {
-        client: function(item, escape) {
+        user: function(item, escape) {
             var name = escape(item.name),
                 companyname = '',
                 descriptor = '',
@@ -330,27 +245,6 @@ function () {
 
             return '<div>'
                 + '<span class="name">' + name + companyname + descriptor + '</span>'
-                + email
-                + '</div>';
-        },
-        user: function(item, escape) {
-            var name = escape(item.name),
-                descriptor = '',
-                email = '',
-                isNumericId = !isNaN(item.id);
-
-            if (typeof item.descriptor === "undefined") {
-                descriptor = (isNumericId && item.id > 0 ? ' - #' + escape(item.id) : '');
-            } else {
-                descriptor = escape(item.descriptor);
-            }
-
-            if (isNumericId && item.id > 0 && item.email) {
-                email = '<span class="email">' + escape(item.email) + '</span>';
-            }
-
-            return '<div>'
-                + '<span class="name">' + name + descriptor + '</span>'
                 + email
                 + '</div>';
         },
@@ -457,16 +351,7 @@ function () {
                 thisSelectize.clear();
             });
             thisSelectize.on('blur', function () {
-                var thisValue = thisSelectize.getValue(),
-                    isNumeric = !(isNaN(thisValue)),
-                    minValue = 1;
-                if (element.data('allow-empty-option') === 1) {
-                    minValue = 0;
-                }
-                if (
-                    thisValue === ''
-                    || (isNumeric && (thisValue < minValue))
-                ) {
+                if (thisSelectize.getValue() === '') {
                     thisSelectize.setValue(thisSelectize.currentValue);
                 }
             });
@@ -507,11 +392,7 @@ function () {
                 onChange = function (value) {
                     var changeSelector = jQuery(onChangeSelector);
                     if (changeSelector.length) {
-                        if (
-                            !(isNaN(instance.currentValue))
-                            && instance.currentValue > 0
-                            && (value.length && value !== instance.currentValue)
-                        ) {
+                        if (value.length && value !== instance.currentValue) {
                             changeSelector.click();
                         }
                     }

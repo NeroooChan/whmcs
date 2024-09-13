@@ -28,8 +28,7 @@ $currency = getCurrency('','1');
 $results = Capsule::table('tblservers')
     ->where('disabled', '=', '0')
     ->orderBy('name', 'asc')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $id = $result->id;
     $name = $result->name;
@@ -46,8 +45,7 @@ foreach ($results as $result) {
         ->where('server', '=', (int) $id)
         ->whereIn('domainstatus', ['Active', 'Suspended'])
         ->whereNotIn('billingcycle', ['Free Account', 'One Time'])
-        ->get()
-        ->all();
+        ->get();
     foreach ($services as $service) {
         $amount = $service->reportamt;
         $billingcycle = $service->billingcycle;

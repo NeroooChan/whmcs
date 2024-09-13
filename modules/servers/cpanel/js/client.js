@@ -8,8 +8,6 @@ function doEmailCreate() {
         function( data ) {
             jQuery("#btnCreateLoader").removeClass('fa-spinner fa-spin').addClass('fa-plus');
             if (data.success) {
-                jQuery('#cpanel-email-prefix').val('');
-                jQuery('#cpanel-email-password').val('');
                 jQuery("#emailCreateSuccess").hide().removeClass('hidden')
                     .slideDown();
             } else {

@@ -26,8 +26,7 @@ $results = Capsule::table('tblaccounts')
     ->groupBy('userid')
     ->orderBy('balance', 'desc')
     ->take(10)
-    ->get()
-    ->all();
+    ->get();
 
 foreach ($results as $result) {
     $userid = $result->id;

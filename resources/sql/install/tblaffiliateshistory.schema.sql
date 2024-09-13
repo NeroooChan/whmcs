@@ -13,7 +13,7 @@ CREATE TABLE `tblaffiliateshistory` (
   `date` date NOT NULL,
   `affaccid` int(10) NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `amount` decimal(16,2) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `affiliateid` (`affiliateid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

@@ -32,8 +32,7 @@ $results = Capsule::table('tblaccounts')
     ->where('date', '>=', ($currentyear - 2) . '-01-01')
     ->groupBy(Capsule::raw("date_format(date,'%M %Y')"))
     ->orderBy('date', 'asc')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $month = (int) $result->month;
     $year = (int) $result->year;

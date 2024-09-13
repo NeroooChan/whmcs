@@ -18,8 +18,7 @@ if ($_GET["action"]=="updatestats") {
 
 $results = Capsule::table('tblservers')
     ->orderBy('name', 'asc')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $serverid = $result->id;
     $name = $result->name;
@@ -44,8 +43,7 @@ foreach ($results as $result) {
         ->where('tblhosting.lastupdate', '!=', '0000-00-00 00:00:00')
         ->whereIn('domainstatus', ['Active', 'Suspended'])
         ->orderBy('tblhosting.domain', 'asc')
-        ->get()
-        ->all();
+        ->get();
     foreach ($services as $service) {
         $name = "{$service->firstname} {$service->lastname}";
         $companyname = $service->companyname;

@@ -95,7 +95,7 @@ $additionaldomainfields[".uk"] = $additionaldomainfields[".co.uk"];
 // .CA
 
 $additionaldomainfields[".ca"][] = array("Name" => "Legal Type", "Required" => true, "LangVar" => "catldlegaltype", "Type" => "dropdown", "Options" => "Corporation,Canadian Citizen,Permanent Resident of Canada,Government,Canadian Educational Institution,Canadian Unincorporated Association,Canadian Hospital,Partnership Registered in Canada,Trade-mark registered in Canada,Canadian Trade Union,Canadian Political Party,Canadian Library Archive or Museum,Trust established in Canada,Aboriginal Peoples,Legal Representative of a Canadian Citizen,Official mark registered in Canada", "Default" => "Corporation", "Description" => "Legal type of registrant contact",);
-$additionaldomainfields[".ca"][] = array("Name" => "CIRA Agreement", "Required" => true, "LangVar" => "catldciraagreement", "Type" => "tickbox", "Description" => "Tick to confirm you agree to the CIRA Registration Agreement shown below<br /><blockquote>You have read, understood and agree to the terms and conditions of the Registrant Agreement, and that CIRA may, from time to time and at its discretion, amend any or all of the terms and conditions of the Registrant Agreement, as CIRA deems appropriate, by posting a notice of the changes on the CIRA website and by sending a notice of any material changes to Registrant. You meet all the requirements of the Registrant Agreement to be a Registrant, to apply for the registration of a Domain Name Registration, and to hold and maintain a Domain Name Registration, including without limitation CIRA's Canadian Presence Requirements for Registrants, at: https://www.cira.ca/policy/legal-agreement/registrant-agreement. CIRA will collect, use and disclose your personal information, as set out in CIRA's Privacy Policy, at: https://www.cira.ca/policy/corporate/cira-privacy-policy</blockquote>",);
+$additionaldomainfields[".ca"][] = array("Name" => "CIRA Agreement", "Required" => true, "LangVar" => "catldciraagreement", "Type" => "tickbox", "Description" => "Tick to confirm you agree to the CIRA Registration Agreement shown below<br /><blockquote>You have read, understood and agree to the terms and conditions of the Registrant Agreement, and that CIRA may, from time to time and at its discretion, amend any or all of the terms and conditions of the Registrant Agreement, as CIRA deems appropriate, by posting a notice of the changes on the CIRA website and by sending a notice of any material changes to Registrant. You meet all the requirements of the Registrant Agreement to be a Registrant, to apply for the registration of a Domain Name Registration, and to hold and maintain a Domain Name Registration, including without limitation CIRA's Canadian Presence Requirements for Registrants, at: www.cira.ca/assets/Documents/Legal/Registrants/CPR.pdf. CIRA will collect, use and disclose your personal information, as set out in CIRA's Privacy Policy, at: www.cira.ca/assets/Documents/Legal/Registrants/privacy.pdf</blockquote>",);
 $additionaldomainfields[".ca"][] = array("Name" => "WHOIS Opt-out", "LangVar" => "catldwhoisoptout", "Type" => "tickbox", "Description" => "Tick to hide your contact information in CIRA WHOIS (only available to individuals)",);
 
 // .ES
@@ -661,18 +661,6 @@ $additionaldomainfields['.eu'][] = [
     'Default' => 'INDIVIDUAL|Individual - Natural persons resident within the European Community',
     'Description' => 'EURid Geographical Restrictions. In order to register a .EU domain '
         . 'name, you must meet certain eligibility requirements.',
-];
-$additionaldomainfields['.eu'][] = [
-    'Name' => 'EU Country of Citizenship',
-    'LangVar' => 'eu_country_of_citizenship',
-    'Type' => 'dropdown',
-    'Options' => [
-        '', 'AT', 'BE', 'BG', 'CZ', 'CY', 'DE', 'DK', 'ES', 'EE', 'FI', 'FR',
-        'GR', 'GB', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL',
-        'PT', 'RO', 'SE', 'SK', 'SI', 'AX', 'GF', 'GI', 'GP', 'MQ', 'RE',
-    ],
-    'Default' => '',
-    'Required' => true,
 ];
 
 // .DEV

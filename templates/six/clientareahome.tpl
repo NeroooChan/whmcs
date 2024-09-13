@@ -1,5 +1,3 @@
-{include file="$template/includes/flashmessage.tpl"}
-
 <div class="tiles clearfix">
     <div class="row">
         <div class="col-sm-3 col-xs-6 tile" onclick="window.location='clientarea.php?action=services'">
@@ -10,7 +8,7 @@
                 <div class="highlight bg-color-blue"></div>
             </a>
         </div>
-        {if $clientsstats.numdomains || $registerdomainenabled || $transferdomainenabled}
+        {if $registerdomainenabled || $transferdomainenabled}
             <div class="col-sm-3 col-xs-6 tile" onclick="window.location='clientarea.php?action=domains'">
                 <a href="clientarea.php?action=domains">
                     <div class="icon"><i class="fas fa-globe"></i></div>

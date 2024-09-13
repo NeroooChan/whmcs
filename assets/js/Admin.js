@@ -9,9 +9,7 @@ jQuery(document).ready(function() {
             return params;
         }
     });
-
-    generateBootstrapSwitches();
-
+    jQuery('.slide-toggle').bootstrapSwitch();
     jQuery('select.form-control.enhanced').select2({
         theme: 'bootstrap'
     });
@@ -394,78 +392,7 @@ jQuery(document).ready(function() {
         }
         element.show();
     });
-
-    jQuery(document).on('click', 'button.disable-submit', function(e) {
-        var button = jQuery(this),
-            form = button.closest('form');
-
-        button.prepend('<i class="fas fa-spinner fa-spin"></i> ')
-            .addClass('disabled')
-            .prop('disabled', true);
-
-        form.submit();
-    });
-
-    /**
-     * Resend verification email button handler.
-     */
-    jQuery('#btnResendVerificationEmail').click(function() {
-        var button = $(this);
-        button.prop('disabled', true).html('<i class="fa fa-spinner fa-spin fa-fw"></i> ' + button.html());
-        WHMCS.http.jqClient.jsonPost(
-                {
-                    url: window.location.href,
-                    data: {
-                        token: csrfToken,
-                        action: 'resendVerificationEmail',
-                        userid: button.data('clientid')
-                    },
-                    success: function(data) {
-                        if (data.success) {
-                            button.html(button.data('successmsg'));
-                        } else {
-                            button.html(button.data('errormsg'));
-                        }
-                    }
-                }
-            );
-    });
-
-    if (typeof Selectize !== 'undefined') {
-        Selectize.define('whmcs_no_results', function (options) {
-            var self = this;
-            this.search = (function () {
-                var original = self.search;
-
-                return function () {
-                    var results = original.apply(this, arguments);
-
-                    var isActualItem = function (item) {
-                        // item.id may be 'client' - this is an actual item
-                        return isNaN(item.id) || item.id > 0;
-                    };
-
-                    var actualItems = results.items.filter(function (item) {
-                        return isActualItem(item);
-                    });
-
-                    var noResultsItems = results.items.filter(function (item) {
-                        return !isActualItem(item);
-                    });
-
-                    if (actualItems.length > 0) {
-                        results.items = actualItems;
-                    } else if (noResultsItems.length > 0) {
-                        results.items = [noResultsItems[0]];
-                    }
-
-                    return results;
-                };
-            })();
-        });
-    }
 });
-
 var addingPayment = false;
 
 function updateServerGroups(requiredModule) {
@@ -721,33 +648,4 @@ function autoSubmitFormByContainer(containerId) {
     if (typeof noAutoSubmit === "undefined" || noAutoSubmit === false) {
         jQuery("#" + containerId).find("form:first").submit();
     }
-}
-
-/**
- * Sluggify a text string.
- */
-function slugify(text) {
-    var search =  "āæåãàáäâảẩấćčçđẽèéëêếēėęīįìíïîłńñœøōõòóöôốớơśšūùúüûưÿžźż·/_,:;–"; // contains Unicode dash
-    var replace = "aaaaaaaaaaacccdeeeeeeeeeiiiiiilnnooooooooooossuuuuuuyzzz-------";
-
-    for (var i = 0, l = search.length; i < l; i++) {
-        text = text.replace(new RegExp(search.charAt(i), 'g'), replace.charAt(i));
-    }
-
-    return text
-        .toString()
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '-')
-        .replace(/&/g, '-and-')
-        .replace(/[^\w\-]+/g, '')
-        .replace(/\-\-+/g, '-');
-}
-
-function generateBootstrapSwitches()
-{
-    jQuery('.slide-toggle').bootstrapSwitch();
-    jQuery('.slide-toggle-mini').bootstrapSwitch({
-        size: 'mini'
-    });
 }

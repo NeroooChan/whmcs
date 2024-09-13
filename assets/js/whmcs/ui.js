@@ -352,15 +352,7 @@ jsonForm: function() {
     };
 
     this.clearFieldError = function (field) {
-        /**
-         * Try dispose first for BS 4, which will raise error
-         * on BS 3 or older, then we use destroy instead
-         */
-        try {
-            $(field).tooltip('dispose');
-        } catch (err) {
-            $(field).tooltip('destroy');
-        }
+        $(field).tooltip('destroy');
         $(field).parents('.form-group').removeClass('has-error');
     };
 

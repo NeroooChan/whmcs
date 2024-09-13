@@ -218,7 +218,6 @@ $COUNTRY_CODES = array(
     'sb'    => 'Solomon Islands',
     'sc'    => 'Seychelles',
     'sd'    => 'Sudan',
-    'ss'    => 'South Sudan',
     'se'    => 'Sweden',
     'sg'    => 'Singapore',
     'sh'    => 'Saint Helena',

@@ -299,20 +299,6 @@
     color: #a2a6af;
 }
 
-@media only screen and (max-width: 767px) {
-    .widget-billing .bordered-right,
-    .widget-billing .bordered-top {
-        border-right: 0;
-        border-top: 0;
-    }
-    .widget-billing .col-sm-6 {
-        border-bottom: 1px solid #eee;
-    }
-    .widget-billing .col-sm-6:last-child {
-        border: 0;
-    }
-}
-
 /* --- Health Widget --- */
 
 .widget-health .progress {

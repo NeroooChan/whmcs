@@ -129,10 +129,10 @@ jqClient: function () {
                     options.success(response);
                 }
             }
-        }, 'json').fail(function(xhr, errorMsg){
-            console.log('[WHMCS] Fail: ' + errorMsg);
+        }, 'json').error(function(xhr, errorMsg){
+            console.log('[WHMCS] Error: ' + errorMsg);
             if (typeof options.fail === 'function') {
-                options.fail(errorMsg, xhr);
+                options.fail(errorMsg);
             }
         }).always(function() {
             if (typeof options.always === 'function') {

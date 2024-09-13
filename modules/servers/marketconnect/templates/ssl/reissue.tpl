@@ -5,7 +5,7 @@
     When reissueing a certificate the domain name cannot be changed and must be exactly the same.
 </div>
 
-<h2>{$LANG.sslserverinfo}</h2>
+{include file="$template/includes/subheader.tpl" title=$LANG.sslserverinfo}
 
 <p>{$LANG.sslserverinfodetails}</p>
 

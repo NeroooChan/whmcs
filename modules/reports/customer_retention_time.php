@@ -58,8 +58,7 @@ foreach ($productGroups as $productGroup) {
             ->whereNotIn('billingcycle', array('Free Account', 'Free', 'One Time'))
             ->selectRaw('count(id) as count, billingcycle, AVG(DATEDIFF(IF(`termination_date` != \'0000-00-00\', `termination_date`, `nextduedate`), `regdate`)) as avg_days')
             ->groupBy('billingcycle')
-            ->get()
-            ->all();
+            ->get();
         if ($services) {
             foreach ($services as $service) {
                 $dateTime = new DateTime();
@@ -99,7 +98,7 @@ foreach ($productGroups as $productGroup) {
 }
 
 /** @var StdClass[] $productAddons */
-$productAddons = Capsule::table('tbladdons')->get()->all();
+$productAddons = Capsule::table('tbladdons')->get();
 $addonRows = array();
 foreach ($productAddons as $productAddon) {
     /** @var StdClass[] $addons */
@@ -110,8 +109,7 @@ foreach ($productAddons as $productAddon) {
         ->whereNotIn('billingcycle', array('Free Account', 'Free', 'One Time'))
         ->selectRaw('count(id) as count, billingcycle, AVG(DATEDIFF(IF(`termination_date` != \'0000-00-00\', `termination_date`, `nextduedate`), `regdate`)) as avg_days')
         ->groupBy('billingcycle')
-        ->get()
-        ->all();
+        ->get();
     if ($addons) {
         foreach ($addons as $addon) {
             $dateTime = new DateTime();
@@ -153,8 +151,7 @@ $addons = Capsule::table('tblhostingaddons')
     ->whereNotIn('billingcycle', array('Free Account', 'Free', 'One Time'))
     ->selectRaw('name, count(id) as count, billingcycle, AVG(DATEDIFF(IF(`termination_date` != \'0000-00-00\', `termination_date`, `nextduedate`), `regdate`)) as avg_days')
     ->groupBy('name', 'billingcycle')
-    ->get()
-    ->all();
+    ->get();
 if ($addons) {
     foreach ($addons as $addon) {
         $dateTime = new DateTime();
@@ -192,7 +189,7 @@ if ($addonRows) {
 }
 
 /** @var StdClass[] $domainTlds */
-$domainTlds = Capsule::table('tbldomainpricing')->get()->all();
+$domainTlds = Capsule::table('tbldomainpricing')->get();
 $domainRows = array();
 foreach ($domainTlds as $domainTld) {
     /** @var StdClass[] $domains */
@@ -202,8 +199,7 @@ foreach ($domainTlds as $domainTld) {
         ->whereIn('status', $statuses)
         ->selectRaw('count(id) as count, registrationperiod, AVG(DATEDIFF(IF(`expirydate` != \'0000-00-00\', `expirydate`, `nextduedate`), `registrationdate`)) as avg_days')
         ->groupBy('registrationperiod')
-        ->get()
-        ->all();
+        ->get();
     if ($domains) {
         foreach ($domains as $domain) {
             $dateTime = new DateTime();

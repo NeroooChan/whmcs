@@ -720,7 +720,6 @@
 .modal-mc-service .sitelock .table-pricing {
     font-size: 0.9em;
 }
-.modal-mc-service .content-padded.symantec,
 .modal-mc-service .sitelock.pricing,
 .modal-mc-service .symantec.pricing {
     max-height: 400px;
@@ -836,12 +835,5 @@
     }
     .mc-sm-container .actions {
         margin: 20px 0;
-    }
-}
-
-@media (min-width:992px) {
-    .market-connect-row {
-        display: flex;
-        flex-flow: row wrap;
     }
 }

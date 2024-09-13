@@ -1,4 +1,4 @@
-<link href="{assetPath file='store.css'}" rel="stylesheet">
+<link href="{$WEB_ROOT}/templates/{$template}/store/css/style.css" rel="stylesheet">
 
 <div class="landing-page marketgoo">
     <div class="hero">
@@ -151,7 +151,7 @@
                                     </li>
                                 {/foreach}
                             </ul>
-                            <form action="{routePath('cart-order')}" method="post">
+                            <form action="{routePath('store-order')}" method="post">
                                 <input type="hidden" name="pid" value="{$plan->id}">
                                 <button type="submit" class="btn btn-primary btn-signup">
                                     {lang key='store.marketgoo.signup'}

@@ -176,8 +176,7 @@ if (count($incfields)) {
 
     $results = $query->leftJoin('tblclients', 'tblclients.id', '=', 'tblaccounts.userid')
         ->orderBy('date', 'asc')
-        ->get()
-        ->all();
+        ->get();
     foreach ($results as $result) {
         $result = (array) $result;
         if (isset($result['currency'])) {

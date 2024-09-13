@@ -25,8 +25,7 @@ $admins = Capsule::table('tbladmins')
             'CONCAT_WS(\' \', tbladmins.firstname, tbladmins.lastname) as name'
         ),
         'id'
-    )
-    ->all();
+    );
 
 $adminDropdown = '';
 foreach ($admins as $adminId => $adminName) {
@@ -94,12 +93,11 @@ $dateto = $dateRange['to']->timestamp;
 $adminquery = ($adminid) ? " AND adminid='".(int)$adminid."'" : '';
 $results = Capsule::table('tbladmins')
     ->orderBy('firstname', 'asc')
-    ->get(['id', 'firstname', 'lastname'])
-    ->all();
-foreach ($results as $adminData) {
-    $adminid = $adminData->id;
-    $adminfirstname = $adminData->firstname;
-    $adminlastname = $adminData->lastname;
+    ->get(['id', 'firstname', 'lastname']);
+foreach ($results as $data) {
+    $adminid = $data->id;
+    $adminfirstname = $data->firstname;
+    $adminlastname = $data->lastname;
 
     $projectData = Capsule::table('mod_projecttimes')
         ->where(function (Builder $query) use ($datefrom, $dateto) {
@@ -120,8 +118,7 @@ foreach ($results as $adminData) {
                 'mod_project.duedate',
                 'mod_projecttasks.task',
             ]
-        )
-        ->all();
+        );
 
     $projectTimes = [];
     foreach ($projectData as $data) {

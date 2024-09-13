@@ -15,7 +15,7 @@ require("../includes/domainfunctions.php");
 
 */
 
-$carttotals = calcCartTotals(Auth::client(), false, true);
+$carttotals = calcCartTotals('',true, getCurrency());
 
 $total = ($carttotals['total']) ? $carttotals['total'] : formatCurrency(0);
 

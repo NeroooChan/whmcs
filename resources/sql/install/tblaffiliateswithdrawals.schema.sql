@@ -11,7 +11,7 @@ CREATE TABLE `tblaffiliateswithdrawals` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `affiliateid` int(10) NOT NULL,
   `date` date NOT NULL,
-  `amount` decimal(16,2) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `affiliateid` (`affiliateid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

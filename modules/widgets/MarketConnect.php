@@ -4,8 +4,10 @@ namespace WHMCS\Module\Widget;
 
 use AdminLang;
 use App;
+use Carbon\Carbon;
 use WHMCS\MarketConnect\Balance;
 use WHMCS\MarketConnect\MarketConnect as MarketConnectConnector;
+use WHMCS\MarketConnect\Promotion;
 use WHMCS\Module\AbstractWidget;
 
 /**
@@ -68,7 +70,7 @@ class MarketConnect extends AbstractWidget
         $langPromotions = AdminLang::trans('global.promotions');
 
         $services = [];
-        foreach (MarketConnectConnector::SERVICES as $service) {
+        foreach (Promotion::SERVICES as $service) {
             $isActive = in_array($service['vendorSystemName'], $activeServices);
             $logoFilename = 'logo-sml.png';
             if (file_exists(

@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="{assetPath file="style.css"}" property="stylesheet" />
+<link rel="stylesheet" type="text/css" href="{$WEB_ROOT}/templates/orderforms/{$carttpl}/css/style.css" property="stylesheet" />
 <script>
 jQuery(document).ready(function () {
     jQuery('#btnShowSidebar').click(function () {
@@ -23,15 +23,15 @@ jQuery(document).ready(function () {
 {/if}
 
 <div class="row row-product-selection">
-    <div class="col-md-3 sidebar product-selection-sidebar" id="premiumComparisonSidebar">
+    <div class="col-xs-3 product-selection-sidebar" id="premiumComparisonSidebar">
         {include file="orderforms/standard_cart/sidebar-categories.tpl"}
     </div>
-    <div class="col-md-12">
+    <div class="col-xs-12">
 
         <div id="order-premium_comparison">
             <div class="main-container price-01">
                 <div class="txt-center">
-                    <h3 id="headline" class="font-size-24">
+                    <h3 id="headline">
                         {if $productGroup.headline}
                             {$productGroup.headline}
                         {else}
@@ -96,7 +96,7 @@ jQuery(document).ready(function () {
                                             {if $product.qty eq "0"}
                                                 <span id="product{$product@iteration}-unavailable" class="order-button unavailable">{$LANG.outofstock}</span>
                                             {else}
-                                                <a href="{$WEB_ROOT}/cart.php?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="order-button" id="product{$product@iteration}-order-button">
+                                                <a href="{$smarty.server.PHP_SELF}?a=add&amp;{if $product.bid}bid={$product.bid}{else}pid={$product.pid}{/if}" class="order-button" id="product{$product@iteration}-order-button">
                                                     {$LANG.ordernowbutton}
                                                 </a>
                                             {/if}
@@ -125,7 +125,7 @@ jQuery(document).ready(function () {
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="head-area">
-                                <span class="primary-bg-color">
+                                <span>
                                     {$LANG.orderForm.includedWithPlans}
                                 </span>
                             </div>

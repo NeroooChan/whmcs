@@ -25,8 +25,7 @@ $results = Capsule::table('tblinvoices')
     ->where('tblinvoices.paymentmethod', '=', 'directdebit')
     ->where('tblinvoices.status', '=', 'Unpaid')
     ->orderBy('duedate', 'asc')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $id = $result->id;
     $userid = $result->userid;

@@ -10,8 +10,7 @@ if (!defined("WHMCS")) {
 require(ROOTDIR."/includes/clientfunctions.php");
 
 $reportdata["title"] = "Project Management Summary";
-$reportdata["description"] = 'This report shows a summary of all log entries '
-    . 'related to projects that have a due date within the given date range.';
+$reportdata["description"] = "This report shows a summary of all projects with times logged betwen";
 
 $range = App::getFromRequest('range');
 if (!$range) {
@@ -43,8 +42,7 @@ $admins = Capsule::table('tbladmins')
             'CONCAT_WS(\' \', tbladmins.firstname, tbladmins.lastname) as name'
         ),
         'id'
-    )
-    ->all();
+    );
 
 $adminDropdown = '';
 foreach ($admins as $adminId => $adminName) {
@@ -112,7 +110,7 @@ $dateRange = Carbon::parseDateRangeValue($range);
 $fromdate = $dateRange['from']->toDateTimeString();
 $todate = $dateRange['to']->toDateTimeString();
 
-$results = Capsule::table('mod_project')
+$results = Capsule::table(mod_project)
     ->whereBetween('duedate', [$fromdate, $todate]);
 if ($adminid) {
     $results->where('adminid', (int) $adminid);
@@ -120,7 +118,7 @@ if ($adminid) {
 if ($status) {
     $results->where('status', db_escape_string($status));
 }
-$results = $results->get()->all();
+$results = $results->get();
 foreach ($results as $data) {
     $totaltaskstime = 0;
     $projectid = $data->id;
@@ -149,8 +147,7 @@ foreach ($results as $data) {
 
     $ticketinvoicelinks = Capsule::table('tbltickets')
         ->whereIn('tid', $ticketids)
-        ->pluck('tid')
-        ->all();
+        ->pluck('tid');
     $baseQuery = Capsule::table('tblinvoices')
         ->join('tblinvoiceitems', 'tblinvoices.id', '=', 'tblinvoiceitems.invoiceid')
         ->where('tblinvoiceitems.description', 'like', "%Project #{$projectid}%")
@@ -186,8 +183,7 @@ foreach ($results as $data) {
             'mod_projecttimes.end',
             'mod_projecttasks.task',
             'mod_projecttasks.completed',
-        ])
-        ->all();
+        ]);
     foreach ($timerresults as $data2) {
         $rowcount = $rowtotal = 0;
 

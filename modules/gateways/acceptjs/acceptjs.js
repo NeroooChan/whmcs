@@ -36,7 +36,7 @@ jQuery(document).ready(function(){
             }
         });
 
-        jQuery(document).on('ifChecked', 'input[name="ccinfo"]', function() {
+        newOrExisting.on('ifChecked change', function() {
             frm.off('submit', validateAcceptJs);
             if (selectedPaymentMethod === 'acceptjs') {
                 var newOrExistingValue = jQuery('input[name="ccinfo"]:checked').val();
@@ -95,15 +95,6 @@ jQuery(document).ready(function(){
 });
 
 function validateAcceptJs(event) {
-    if (
-        typeof recaptchaValidationComplete !== 'undefined'
-        && typeof recaptchaType !== 'undefined'
-        && recaptchaType === 'invisible'
-        && recaptchaValidationComplete === false
-    ) {
-        event.preventDefault();
-        return;
-    }
     var paymentMethod = jQuery('input[name="paymentmethod"]:checked'),
         frm = jQuery('#frmCheckout'),
         newOrExisting = jQuery('input[name="ccinfo"]');
@@ -156,11 +147,11 @@ function acceptJsResponseHandler(response) {
         for (var i = 0; i < response.messages.message.length; i++) {
             errors += response.messages.message[i].text + "\n";
         }
-        frm.find('.gateway-errors').text(errors).slideDown();
+        frm.find('.gateway-errors').text(errors).removeClass('hidden');
         scrollToGatewayInputError();
         frm.find('#btnCompleteOrder').removeAttr('disabled').removeClass('disabled');
     } else {
-        frm.find('.gateway-errors').text('').slideUp();
+        frm.find('.gateway-errors').text('').addClass('hidden');
         // Insert the token ID into the form so it gets submitted to the server:
         frm.append(jQuery('<input type="hidden" name="dataDescriptor">').val(response.opaqueData.dataDescriptor));
         frm.append(jQuery('<input type="hidden" name="dataValue">').val(response.opaqueData.dataValue));
@@ -252,12 +243,12 @@ function acceptJsNewCcResponseHandler(response) {
             errors += response.messages.message[i].text + "\n";
         }
         // Show the errors on the form:
-        ccForm.find('.gateway-errors,.assisted-cc-input-feedback').text(errors).slideDown();
+        ccForm.find('.gateway-errors,.assisted-cc-input-feedback').text(errors).removeClass('hidden');
         scrollToGatewayInputError();
         jQuery('#btnSubmitNewCard').removeAttr('disabled').removeClass('disabled'); // Re-enable submission
 
     } else { // Token was created!
-        ccForm.find('.gateway-errors,.assisted-cc-input-feedback').text('').slideUp();
+        ccForm.find('.gateway-errors,.assisted-cc-input-feedback').text('').addClass('hidden');
         // Insert the token ID into the form so it gets submitted to the server:
         ccForm.append(jQuery('<input type="hidden" name="dataDescriptor">').val(response.opaqueData.dataDescriptor));
         ccForm.append(jQuery('<input type="hidden" name="dataValue">').val(response.opaqueData.dataValue));
@@ -317,13 +308,13 @@ function acceptJsPaymentResponseHandler(response) {
             errors += response.messages.message[i].text + "\n";
         }
         // Show the errors on the form:
-        paymentForm.find('.gateway-errors').text(errors).slideDown();
+        paymentForm.find('.gateway-errors').text(errors).removeClass('hidden');
         scrollToGatewayInputError();
         jQuery('#btnSubmit').removeAttr('disabled').removeClass('disabled')
-            .find('span').toggle(); // Re-enable submission
+            .find('span').toggleClass('hidden'); // Re-enable submission
 
     } else { // Token was created!
-        paymentForm.find('.gateway-errors').text('').slideUp();
+        paymentForm.find('.gateway-errors').text('').addClass('hidden');
         // Insert the token ID into the form so it gets submitted to the server:
         paymentForm.append(jQuery('<input type="hidden" name="dataDescriptor">').val(response.opaqueData.dataDescriptor));
         paymentForm.append(jQuery('<input type="hidden" name="dataValue">').val(response.opaqueData.dataValue));
@@ -342,7 +333,7 @@ function validateAdminAcceptJs(event) {
     adminCreditCard.find('button[type="submit"],input[type="submit"]')
         .prop('disabled', true)
         .addClass('disabled')
-        .find('span').toggle();
+        .find('span').toggleClass('hidden');
 
     var secureData = {},
         authData = {},
@@ -377,11 +368,11 @@ function acceptJsAdminResponseHandler(response) {
             errors += response.messages.message[i].text + "\n";
         }
         // Show the errors on the form:
-        adminCreditCard.find('.gateway-errors').text(errors).slideUp();
+        adminCreditCard.find('.gateway-errors').text(errors).removeClass('hidden');
         scrollToGatewayInputError();
         adminCreditCard.find('#btnSaveChanges').removeAttr('disabled').removeClass('disabled'); // Re-enable submission
     } else {
-        adminCreditCard.find('.gateway-errors').text('').slideUp();
+        adminCreditCard.find('.gateway-errors').text('').addClass('hidden');
         // Insert the token ID into the form so it gets submitted to the server:
         adminCreditCard.append(jQuery('<input type="hidden" name="dataDescriptor">').val(response.opaqueData.dataDescriptor));
         adminCreditCard.append(jQuery('<input type="hidden" name="dataValue">').val(response.opaqueData.dataValue));

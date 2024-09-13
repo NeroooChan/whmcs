@@ -25,30 +25,11 @@ class Health extends AbstractWidget
 
     public function generateOutput($data)
     {
-        if (
-            !is_array($data)
-            ||
-            empty($data['result'])
-            ||
-            $data['result'] === 'error'
-        ) {
-            /*
-             * A previous version may have cached an erroneous response due to PHP 7.4 not being itemized
-             * in Php environment class. We can retry obtaining that data
-             */
-            $data = $this->fetchData(true);
-        }
+        $countSuccess = count($data['checks']['success']);
+        $countWarnings = count($data['checks']['warning']);
+        $countDanger = count($data['checks']['danger']);
 
-        $countSuccess = count($data['checks']['success'] ?? []);
-        $countWarnings = count($data['checks']['warning'] ?? []);
-        $countDanger = count($data['checks']['danger'] ?? []);
-
-        $totalCount = $countSuccess + $countDanger;
-
-        $countPercent = $totalCount > 0
-            ? round (($countSuccess / $totalCount) * 100, 0)
-            : 100; // fallback to avoid dividing by 0
-
+        $countPercent = round ($countSuccess / ($countSuccess + $countDanger) * 100, 0);
         $ratingMsg = '<span style="color:#49a94d;">Good</span>';
         $ratingIcon = '<i class="pe-7s-help2" style="color:#49a94d;"></i>';
         if ($countPercent < 50) {

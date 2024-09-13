@@ -22,8 +22,7 @@ $results = Capsule::table('tblclients')
     ->where('Status', '=', 'Active')
     ->groupBy('country')
     ->orderBy('country', 'asc')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $clientstats[$result->country] = $result->count;
 }
@@ -34,8 +33,7 @@ $results = Capsule::table('tblhosting')
     ->where('domainstatus', '=', 'Active')
     ->groupBy('country')
     ->orderBy('country', 'asc')
-    ->get()
-    ->all();
+    ->get();
 foreach ($results as $result) {
     $countryname = $countries[$result->country];
     if ($countryname) {

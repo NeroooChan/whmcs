@@ -154,7 +154,7 @@ if (count($incfields)) {
         $query->whereBetween('datecreated', [$fromdate, $todate]);
     }
 
-    $results = $query->get()->all();
+    $results = $query->get();
 
     foreach ($results as $result) {
         $result = (array) $result;

@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS `tblaffiliatespending`;
 CREATE TABLE `tblaffiliatespending` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `affaccid` int(10) NOT NULL DEFAULT '0',
-  `amount` decimal(16,2) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
   `clearingdate` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `clearingdate` (`clearingdate`)

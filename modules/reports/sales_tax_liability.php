@@ -125,8 +125,7 @@ $results = Capsule::table('tblinvoices')
     ->where('tblclients.currency', '=', $currencyID)
     ->whereNull('tblinvoiceitems.id')
     ->orderBy('date', 'asc')
-    ->get()
-    ->all();
+    ->get();
 
 foreach ($results as $result) {
     $id = $result->id;
@@ -144,10 +143,10 @@ foreach ($results as $result) {
         "{$client}",
         "{$date}",
         "{$datepaid}",
-        format_as_currency($subtotal),
-        format_as_currency($tax),
-        format_as_currency($credit),
-        format_as_currency($total),
+        "{$subtotal}",
+        "{$tax}",
+        "{$credit}",
+        "{$total}",
     ];
 }
 

@@ -276,12 +276,8 @@ if(!class_exists('NamecheapRegistrarApi')){
          */
         private function _getClientIp()
         {
-            $ipAddress = App::getRemoteIp();
-            $clientIp = "10.11.12.13";
-            if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false) {
-                $clientIp = $ipAddress;
-            }
-            return $clientIp;
+            $clientip = $_SERVER['REMOTE_ADDR'];
+            return ($clientip && $clientip != '::1') ? $clientip : "10.11.12.13";
         }
 
         /**

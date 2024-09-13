@@ -27,7 +27,7 @@ CREATE TABLE `tblclients` (
   `authdata` text COLLATE utf8_unicode_ci NOT NULL,
   `currency` int(10) NOT NULL,
   `defaultgateway` text COLLATE utf8_unicode_ci NOT NULL,
-  `credit` decimal(16,2) NOT NULL,
+  `credit` decimal(10,2) NOT NULL,
   `taxexempt` tinyint(1) NOT NULL,
   `latefeeoveride` tinyint(1) NOT NULL,
   `overideduenotices` tinyint(1) NOT NULL,

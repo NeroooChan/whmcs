@@ -2,4 +2,3 @@
 
 ; Limit of accounts per Plesk client
 ; account_limit = 1
-; skip_addon_prefix = false

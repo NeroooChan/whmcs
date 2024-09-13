@@ -7,7 +7,7 @@
 <!-- RangeSlider CSS -->
 <link type="text/css" rel="stylesheet" href="{$BASE_PATH_CSS}/ion.rangeSlider.skinHTML5.css" property="stylesheet" />
 <!-- Core CSS -->
-<link type="text/css" rel="stylesheet" href="{assetPath file="style.css"}" property="stylesheet" />
+<link type="text/css" rel="stylesheet" href="{$WEB_ROOT}/templates/orderforms/{$carttpl}/css/style.css" property="stylesheet" />
 
 <script>
 jQuery(document).ready(function () {
@@ -32,15 +32,15 @@ jQuery(document).ready(function () {
 {else}
 
     <div class="row row-product-selection">
-        <div class="col-md-3 sidebar product-selection-sidebar" id="premiumComparisonSidebar">
+        <div class="col-xs-3 product-selection-sidebar" id="premiumComparisonSidebar">
             {include file="orderforms/standard_cart/sidebar-categories.tpl"}
         </div>
-        <div class="col-md-12">
+        <div class="col-xs-12">
 
             <div id="order-cloud_slider">
                 <section class="plans-full-main">
                     {if $showSidebarToggle}
-                        <div class="pull-left float-left">
+                        <div class="pull-left">
                             <button type="button" class="btn btn-default btn-sm" id="btnShowSidebar">
                                 <i class="fas fa-arrow-circle-right"></i>
                                 {$LANG.showMenu}
@@ -63,13 +63,13 @@ jQuery(document).ready(function () {
                                         {/if}
                                     </div>
                                     <div class="images-container">
-                                        <img src="{assetPath ns="img" file="sky-hr.png"}" alt="">
+                                        <img src="{$WEB_ROOT}/templates/orderforms/{$carttpl}/img/sky-hr.png" alt="">
                                     </div>
                                 </div>
 
                                 {if $productGroup.tagline}
                                     <div id="tagline" class="tag-line-head">
-                                        <h5 class="font-size-14">{$productGroup.tagline}</h5>
+                                        <h5>{$productGroup.tagline}</h5>
                                     </div>
                                 {/if}
 
@@ -134,9 +134,9 @@ jQuery(document).ready(function () {
                                     <!-- Start: Feature 01 -->
                                     <div class="col-md-12 feature-container clearfix">
                                         <div class="left-img">
-                                            <img src="{assetPath ns="img" file="feat-img-01.png"}" alt="">
+                                            <img src="{$WEB_ROOT}/templates/orderforms/{$carttpl}/img/feat-img-01.png" alt="">
                                         </div>
-                                        <h4 class="font-size-18">
+                                        <h4>
                                             {$LANG.cloudSlider.feature01Title}
                                         </h4>
                                         <p>
@@ -151,9 +151,9 @@ jQuery(document).ready(function () {
                                     <!-- Start: Feature 02 -->
                                     <div class="col-md-12 feature-container clearfix">
                                         <div class="right-img">
-                                            <img src="{assetPath ns="img" file="feat-img-02.png"}" alt="">
+                                            <img src="{$WEB_ROOT}/templates/orderforms/{$carttpl}/img/feat-img-02.png" alt="">
                                         </div>
-                                        <h4 class="font-size-18">
+                                        <h4>
                                             {$LANG.cloudSlider.feature02Title}
                                         </h4>
                                         <p>
@@ -170,7 +170,7 @@ jQuery(document).ready(function () {
                                         <div class="left-img">
                                             <img src="{$WEB_ROOT}/templates/orderforms/{$carttpl}/img/feat-img-03.jpg" alt="">
                                         </div>
-                                        <h4 class="font-size-18">
+                                        <h4>
                                             {$LANG.cloudSlider.feature03Title}
                                         </h4>
                                         <p>
@@ -187,7 +187,7 @@ jQuery(document).ready(function () {
                             <!-- End: Features Content -->
 
                             {if $productGroup}
-                                <h3 class="text-center font-size-24">{$LANG.cloudSlider.selectProductLevel}</h3>
+                                <h3 class="text-center">{$LANG.cloudSlider.selectProductLevel}</h3>
 
                                 <!-- Start: Price Calculation Box -->
                                 <div class="price-calc-container">
@@ -241,7 +241,7 @@ var allProducts = {
     {foreach $products as $num => $product}
         "{$num}": {
             "name": "{$product.name}",
-            "desc": "{$product.featuresdesc|nl2br|trim|regex_replace:"/[\r\n]/":''}",
+            "desc": "{$product.featuresdesc|nl2br|trim}",
             {if isset($product.pid)}
                 "pid": "{$product.pid}",
                 "displayPrice": "{$product.pricing.minprice.price}",
@@ -325,7 +325,7 @@ function updateFeaturesList(data)
     var featuresTargetArea = "";
     var priceTargetArea = "";
     var orderNowArea = "";
-    var selfLink = "{$WEB_ROOT}/cart.php";
+    var selfLink = "{$smarty.server.PHP_SELF}";
     var buyLink = "";
 
     if (selectedId == 'scroll-top') {
